@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Training Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --paper:#EDEFEA; --card:#F6F7F3; --ink:#171C18; --ink-2:#556056; --ink-3:#808B81;
+    --rule:#CBD1C7; --rule-soft:#DDE1D9;
+    --accent:#1A5E6B; --accent-bg:#D6E4E8;
+    --warn-bg:#EFE7D4; --warn-ink:#6B5518;
+    --flag:#8A3A2A; --flag-bg:#EFDDD8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#131714; --card:#1A201B; --ink:#E9EDE7; --ink-2:#9BA69A; --ink-3:#6E7A6E;
+      --rule:#2E362F; --rule-soft:#242B25;
+      --accent:#6FB8C9; --accent-bg:#16292E;
+      --warn-bg:#2B2617; --warn-ink:#D2BC7C;
+      --flag:#E08A76; --flag-bg:#2E1D18;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#131714; --card:#1A201B; --ink:#E9EDE7; --ink-2:#9BA69A; --ink-3:#6E7A6E;
+    --rule:#2E362F; --rule-soft:#242B25;
+    --accent:#6FB8C9; --accent-bg:#16292E;
+    --warn-bg:#2B2617; --warn-ink:#D2BC7C;
+    --flag:#E08A76; --flag-bg:#2E1D18;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Literata", Georgia, "Times New Roman", serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  img { max-width:100%; }
+  .sheet { max-width:900px; margin:0 auto; padding:48px 24px 96px; display:flex; flex-direction:column; gap:56px; }
+
+  h1,h2,h3 { font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0; line-height:1.1; }
+  h1 { font-weight:800; font-size:clamp(34px,6.5vw,52px); letter-spacing:-.02em; }
+  h2 { font-weight:800; font-size:24px; letter-spacing:-.01em; }
+  h3 { font-weight:700; font-size:17px; }
+  p { margin:0; }
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+
+  header { display:flex; flex-direction:column; gap:18px; }
+  .title-rule { height:3px; width:68px; background:var(--ink); }
+  .standfirst { font-size:18px; color:var(--ink-2); max-width:62ch; }
+  .standfirst strong { color:var(--ink); font-weight:600; }
+
+  /* priority ladder */
+  .ladder { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); }
+  .ladder > div { background:var(--card); padding:14px 16px; display:flex; flex-direction:column; gap:4px; }
+  .ladder .r { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+  .ladder .n { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:16px; }
+  .ladder .w { font-size:13px; color:var(--ink-3); line-height:1.35; }
+  @media (max-width:720px) { .ladder { grid-template-columns:repeat(2,1fr); } }
+
+  section { display:flex; flex-direction:column; gap:22px; }
+  .sec-head { display:flex; flex-direction:column; gap:8px; border-top:2px solid var(--ink); padding-top:14px; }
+  .sec-head .num { font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--accent); }
+  .sec-head .note { font-size:15px; color:var(--ink-2); max-width:66ch; }
+  .sec-head .note b { color:var(--ink); font-weight:600; }
+
+  /* week strip */
+  .week { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); }
+  .week > div { background:var(--card); padding:12px 10px; display:flex; flex-direction:column; gap:5px; min-height:112px; }
+  .week .d { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .week .s { font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:14px; line-height:1.2; }
+  .week .x { font-size:11.5px; color:var(--ink-3); line-height:1.3; margin-top:auto; }
+  .week .rest { background:var(--accent-bg); }
+  @media (max-width:860px) { .week { grid-template-columns:repeat(2,1fr); } }
+
+  /* session cards */
+  .sessions { display:flex; flex-direction:column; gap:26px; }
+  .sess { border:1px solid var(--rule); background:var(--card); }
+  .sess-h { padding:14px 18px; border-bottom:2px solid var(--ink); display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:10px; }
+  .sess-h .l { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .sess-h .day { font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+  .sess-note { padding:12px 18px; font-size:14px; color:var(--ink-2); border-bottom:1px solid var(--rule-soft); max-width:74ch; }
+  .sess-note b { color:var(--ink); font-weight:600; }
+  .sub-head { padding:10px 18px 4px; font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
+
+  .tw { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; min-width:480px; font-size:14.5px; }
+  th,td { text-align:left; padding:9px 18px; border-bottom:1px solid var(--rule-soft); }
+  thead th { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:0; }
+  td.n { font-family:"JetBrains Mono",monospace; font-variant-numeric:tabular-nums; font-size:13.5px; white-space:nowrap; }
+  td.ex { font-weight:600; }
+  td.ex small { display:block; font-weight:400; font-size:12.5px; color:var(--ink-3); line-height:1.35; margin-top:2px; }
+
+  .tag { font-family:"JetBrains Mono",monospace; font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:3px 7px; border-radius:2px; white-space:nowrap; }
+  .t-verb { background:var(--accent-bg); color:var(--accent); }
+  .t-der { background:var(--rule-soft); color:var(--ink-2); }
+  .t-flag { background:var(--flag-bg); color:var(--flag); }
+
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:760px) { .grid2 { grid-template-columns:1fr; } }
+  .box { border:1px solid var(--rule); background:var(--card); padding:18px 20px; display:flex; flex-direction:column; gap:11px; }
+  .box.warn { background:var(--warn-bg); border-color:transparent; }
+  .box.warn h3, .box.warn li, .box.warn p { color:var(--warn-ink); }
+  .box ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.5; }
+  .box ul li { padding-left:18px; position:relative; }
+  .box ul li::before { content:""; position:absolute; left:0; top:.62em; width:7px; height:1.5px; background:currentColor; opacity:.55; }
+  .box p { font-size:14.5px; color:var(--ink-2); }
+
+  /* volume bars */
+  .vol { display:flex; flex-direction:column; gap:0; }
+  .vol-row { display:grid; grid-template-columns:150px 1fr 54px; align-items:center; gap:14px; padding:8px 0; border-bottom:1px solid var(--rule-soft); }
+  .vol-row:last-child { border-bottom:0; }
+  .vol-name { font-size:14.5px; font-weight:600; }
+  .vol-bar { height:9px; background:var(--rule-soft); position:relative; }
+  .vol-fill { position:absolute; left:0; top:0; bottom:0; background:var(--accent); }
+  .vol-fill.low { background:var(--flag); }
+  .vol-range { position:absolute; top:-3px; bottom:-3px; border-left:1.5px solid var(--ink-3); border-right:1.5px solid var(--ink-3); opacity:.45; }
+  .vol-n { font-family:"JetBrains Mono",monospace; font-size:13px; font-variant-numeric:tabular-nums; text-align:right; }
+  @media (max-width:620px) { .vol-row { grid-template-columns:110px 1fr 44px; gap:10px; } }
+
+  footer { border-top:2px solid var(--ink); padding-top:18px; display:flex; flex-direction:column; gap:10px; font-size:14.5px; color:var(--ink-2); }
+  footer b { color:var(--ink); font-weight:600; }
+  code { font-family:"JetBrains Mono",monospace; font-size:.9em; background:var(--rule-soft); padding:1px 5px; border-radius:2px; }
+
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  @media print {
+    body { background:#fff; color:#000; }
+    .sheet { padding:0; gap:32px; max-width:none; }
+    .sess, .box, .week > div, .ladder > div { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">Protocol · training · 06:00 to 07:30 door to door</p>
+    <h1>Training Protocol</h1>
+    <div class="title-rule"></div>
+    <p class="standfirst">Six sessions a week in a <strong>65 minute working window</strong>, built around one ranking you chose yourself. Everything below is a consequence of that ranking, not a preference.</p>
+
+    <div class="ladder">
+      <div><span class="r">Priority 1</span><span class="n">Physique</span><span class="w">Drives the rep ranges and the volume targets</span></div>
+      <div><span class="r">Priority 2</span><span class="n">Endurance</span><span class="w">Buys the Z2 finishers and the plyometrics</span></div>
+      <div><span class="r">Priority 3</span><span class="n">Injury free</span><span class="w">Kills heavy singles and grinding sets</span></div>
+      <div><span class="r">Priority 4</span><span class="n">Strength numbers</span><span class="w">Sacrificed first, deliberately</span></div>
+    </div>
+
+    <div class="box">
+      <h3>Why that ranking is right, not a compromise</h3>
+      <p>The concurrent training interference effect hits power hardest, maximal strength second, hypertrophy least. Putting physique first and strength last means the endurance work costs you almost nothing. Ranked the other way round, a cardio day would have to go.</p>
+      <p><b>The practical consequence: no heavy singles, no maxing, ever. Everything at 6 to 15 reps, RIR 1 to 3.</b> Lower joint stress, lower CNS cost, which is what makes six sessions survivable against seven working days.</p>
+    </div>
+  </header>
+
+  <!-- WEEK -->
+  <section>
+    <div class="sec-head">
+      <span class="num">01 — THE WEEK</span>
+      <h2>One lower day, three upper, two engines</h2>
+      <p class="note">Plyometrics sit on Monday as a primer: fresh CNS, they potentiate the squat that follows, they concentrate every bit of lower-body impact into one day leaving Monday to Saturday clear before the long run, and they train the broad jump benchmark directly.</p>
+    </div>
+
+    <div class="week">
+      <div><span class="d">Mon</span><span class="s">Lower + plyo</span><span class="x">High impact day</span></div>
+      <div><span class="d">Tue</span><span class="s">Upper A, push</span><span class="x">+ 15 min Z2</span></div>
+      <div><span class="d">Wed</span><span class="s">Swim</span><span class="x">30 g carbs at 05:45</span></div>
+      <div><span class="d">Thu</span><span class="s">Upper B, pull</span><span class="x">+ 15 min Z2</span></div>
+      <div><span class="d">Fri</span><span class="s">Upper C, arms</span><span class="x">Isolation day</span></div>
+      <div><span class="d">Sat</span><span class="s">Long run</span><span class="x">Window to 08:00</span></div>
+      <div class="rest"><span class="d">Sun</span><span class="s">Rest</span><span class="x">Weekly planning</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="box">
+        <h3>Where the conditioning goes, and why</h3>
+        <ul>
+          <li><b>Z2 finishers on upper days only.</b> Running after pressing and pulling costs nothing. Running after leg training competes directly for the recovery the quads need. That single placement buys 30 free aerobic minutes a week.</li>
+          <li><b>Sunday is rest and planning together.</b> Pairing the lowest physical demand with the highest administrative load is the right way round. Saturday reviews the week that just ended.</li>
+          <li><b>Kettlebell swings suit you specifically.</b> Hip hinge power with almost no eccentric loading, so they add nothing to the muscle damage Saturday's run already causes. Rare conditioning that does not compete with running.</li>
+        </ul>
+      </div>
+      <div class="box warn">
+        <h3>The trade you made on purpose</h3>
+        <p><b>One lower day is leg maintenance, not leg growth.</b> It puts you at roughly 7 quad and 8 hamstring sets a week against a 10 to 20 productive range.</p>
+        <p>Legs are half a physique, and physique is priority one. Running adds some stimulus but mostly to endurance fibres, so it does not fill the gap.</p>
+        <p><b>Review in three months.</b> If legs look behind, add the second lower day back rather than piling sets onto Monday. One session cannot productively absorb 18 or more hard leg sets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SESSIONS -->
+  <section>
+    <div class="sec-head">
+      <span class="num">02 — THE SESSIONS</span>
+      <h2>What you actually do</h2>
+      <p class="note">The original v3 document was not in the shared snapshot, so each session is tagged. <span class="tag t-verb">verbatim</span> means recovered word for word. <span class="tag t-der">derived</span> means built from the stated constraints and consistent with them, but not the original document.</p>
+    </div>
+
+    <div class="sessions">
+
+      <div class="sess">
+        <div class="sess-h">
+          <div class="l"><span class="day">Monday</span><h3>Lower + plyometric primer</h3></div>
+          <span class="tag t-der">derived</span>
+        </div>
+        <p class="sess-note">Get-ups first as <b>skill work, not conditioning</b>. Start with a shoe balanced on your fist before you touch a bell. September is the right month for this, because you are deliberately not chasing load anyway.</p>
+        <div class="sub-head">Prep and plyometrics — 21 contacts, halve to ~11 through September</div>
+        <div class="tw"><table>
+          <thead><tr><th>Movement</th><th>Sets × reps</th><th>Load</th></tr></thead>
+          <tbody>
+            <tr><td class="ex">Turkish get-up<small>Book a technique check inside the first two weeks. A swing driven by the arms instead of the hips, 45 times a week at 06:00 with a cold body, will find your lower back eventually.</small></td><td class="n">3 × 2 / side</td><td class="n">light</td></tr>
+            <tr><td class="ex">Box jump</td><td class="n">3 × 5</td><td class="n">bodyweight</td></tr>
+            <tr><td class="ex">Broad jump</td><td class="n">2 × 3</td><td class="n">bodyweight</td></tr>
+          </tbody>
+        </table></div>
+        <div class="sub-head">Main work</div>
+        <div class="tw"><table>
+          <thead><tr><th>Exercise</th><th>Sets × reps</th><th>RIR</th></tr></thead>
+          <tbody>
+            <tr><td class="ex">Back squat</td><td class="n">4 × 6–8</td><td class="n">2</td></tr>
+            <tr><td class="ex">Romanian deadlift</td><td class="n">3 × 8–10</td><td class="n">2</td></tr>
+            <tr><td class="ex">Bulgarian split squat</td><td class="n">3 × 8–10 / leg</td><td class="n">1</td></tr>
+            <tr><td class="ex">Seated leg curl</td><td class="n">3 × 12–15</td><td class="n">1</td></tr>
+            <tr><td class="ex">Standing calf raise<small>Superset into the rest periods. Costs zero extra time.</small></td><td class="n">3 × 15–20</td><td class="n">1</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="sess">
+        <div class="sess-h">
+          <div class="l"><span class="day">Tuesday</span><h3>Upper A · push</h3></div>
+          <span class="tag t-der">derived</span>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>Exercise</th><th>Sets × reps</th><th>RIR</th></tr></thead>
+          <tbody>
+            <tr><td class="ex">Incline barbell press</td><td class="n">4 × 6–8</td><td class="n">2</td></tr>
+            <tr><td class="ex">Standing overhead press</td><td class="n">3 × 6–8</td><td class="n">2</td></tr>
+            <tr><td class="ex">Weighted dip</td><td class="n">3 × 8–10</td><td class="n">1</td></tr>
+            <tr><td class="ex">Chest-supported row</td><td class="n">3 × 8–10</td><td class="n">1</td></tr>
+            <tr><td class="ex">Lateral raise</td><td class="n">3 × 15–20</td><td class="n">0</td></tr>
+            <tr><td class="ex">Overhead triceps extension</td><td class="n">3 × 10–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Weighted cable crunch <span class="tag t-verb">verbatim</span><small>Superset into rest periods. Train abs like a muscle: loaded, 8 to 20 reps, progressing the weight. Not 100 bodyweight crunches.</small></td><td class="n">3 × 12–15</td><td class="n">1</td></tr>
+            <tr><td class="ex">Zone 2 finisher</td><td class="n">15 min</td><td class="n">—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="sess">
+        <div class="sess-h">
+          <div class="l"><span class="day">Thursday</span><h3>Upper B · pull and rotation</h3></div>
+          <span class="tag t-der">derived</span>
+        </div>
+        <p class="sess-note">This is the back day: about <b>16 sets</b>, which is exactly why the cable row was dropped from Friday. It also carries the rotational work, because <b>the programme had zero transverse-plane loading</b> against nine hours a day at a desk. That was a real hole, not a flavour change.</p>
+        <div class="tw"><table>
+          <thead><tr><th>Exercise</th><th>Sets × reps</th><th>RIR</th></tr></thead>
+          <tbody>
+            <tr><td class="ex">Weighted pull-up</td><td class="n">4 × 5–8</td><td class="n">2</td></tr>
+            <tr><td class="ex">Barbell row</td><td class="n">4 × 8–10</td><td class="n">2</td></tr>
+            <tr><td class="ex">Lat pulldown</td><td class="n">3 × 10–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Face pull</td><td class="n">3 × 15–20</td><td class="n">0</td></tr>
+            <tr><td class="ex">Landmine rotation<small>The transverse plane. This is the gap that was sitting at zero.</small></td><td class="n">3 × 10–12 / side</td><td class="n">2</td></tr>
+            <tr><td class="ex">Farmer carry</td><td class="n">3 × 40 m</td><td class="n">—</td></tr>
+            <tr><td class="ex">Kettlebell swing</td><td class="n">3 × 15</td><td class="n">—</td></tr>
+            <tr><td class="ex">EZ-bar curl</td><td class="n">3 × 8–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Zone 2 finisher</td><td class="n">15 min</td><td class="n">—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="sess">
+        <div class="sess-h">
+          <div class="l"><span class="day">Friday</span><h3>Upper C · arms and isolation</h3></div>
+          <span class="tag t-verb">verbatim</span>
+        </div>
+        <p class="sess-note">Two exercises per arm muscle, not one, and the pairing is deliberate: <b>incline curl and overhead extension load the long head under stretch, EZ curl and pushdown load the shortened position.</b> The long head of both biceps and triceps responds particularly well to stretch-position work, so covering both angles beats three sets of the same movement.</p>
+        <div class="tw"><table>
+          <thead><tr><th>Exercise</th><th>Sets × reps</th><th>RIR</th></tr></thead>
+          <tbody>
+            <tr><td class="ex">Incline DB press</td><td class="n">2 × 10–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Lateral raise</td><td class="n">4 × 15–20</td><td class="n">0</td></tr>
+            <tr><td class="ex">Face pull</td><td class="n">2 × 15–20</td><td class="n">0</td></tr>
+            <tr><td class="ex">EZ-bar curl</td><td class="n">3 × 8–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Incline DB curl</td><td class="n">3 × 10–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Overhead cable extension</td><td class="n">3 × 10–12</td><td class="n">1</td></tr>
+            <tr><td class="ex">Rope pushdown</td><td class="n">3 × 12–15</td><td class="n">1</td></tr>
+            <tr><td class="ex">Seated leg curl</td><td class="n">2 × 15</td><td class="n">1</td></tr>
+            <tr><td class="ex">Calf raise</td><td class="n">2 × 15–20</td><td class="n">1</td></tr>
+            <tr><td class="ex">Hanging leg raise<small>Superset into rest periods.</small></td><td class="n">3 × 10–15</td><td class="n">1</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="sess">
+        <div class="sess-h">
+          <div class="l"><span class="day">Wed &amp; Sat</span><h3>Swim and long run</h3></div>
+          <span class="tag t-der">derived</span>
+        </div>
+        <p class="sess-note"><b>Both need 30 g of carbs at 05:45.</b> A 17 hour fast is fine for lifting, because muscle glycogen survives an overnight fast well and it is liver glycogen that depletes. The long run and the swim suffer badly without them. Banana, dates, honey. On lifting days black coffee alone is enough.</p>
+        <div class="tw"><table>
+          <thead><tr><th>Session</th><th>Structure</th><th>Window</th></tr></thead>
+          <tbody>
+            <tr><td class="ex">Wednesday swim</td><td>400 m easy warm-up, interval main set, 200 m cool-down</td><td class="n">45 min</td></tr>
+            <tr><td class="ex">Saturday long run<small>Zone 2. Benchmark weekends replace this with the 5K or Cindy.</small></td><td>Steady, conversational pace throughout</td><td class="n">06:00–08:00</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VOLUME -->
+  <section>
+    <div class="sec-head">
+      <span class="num">03 — WEEKLY VOLUME</span>
+      <h2>Where the sets actually land</h2>
+      <p class="note">Direct working sets per week. The bracket marks the <b>10 to 20 productive range</b> for hypertrophy. Anything short of it is a decision, and worth knowing you made.</p>
+    </div>
+    <div class="vol">
+      <div class="vol-row"><span class="vol-name">Back</span><span class="vol-bar"><span class="vol-fill" style="width:80%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">16</span></div>
+      <div class="vol-row"><span class="vol-name">Chest</span><span class="vol-bar"><span class="vol-fill" style="width:45%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">9</span></div>
+      <div class="vol-row"><span class="vol-name">Biceps</span><span class="vol-bar"><span class="vol-fill" style="width:45%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">9</span></div>
+      <div class="vol-row"><span class="vol-name">Triceps</span><span class="vol-bar"><span class="vol-fill" style="width:45%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">9</span></div>
+      <div class="vol-row"><span class="vol-name">Hamstrings</span><span class="vol-bar"><span class="vol-fill low" style="width:40%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">8</span></div>
+      <div class="vol-row"><span class="vol-name">Quads</span><span class="vol-bar"><span class="vol-fill low" style="width:35%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">7</span></div>
+      <div class="vol-row"><span class="vol-name">Side delts</span><span class="vol-bar"><span class="vol-fill" style="width:35%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">7</span></div>
+      <div class="vol-row"><span class="vol-name">Abs</span><span class="vol-bar"><span class="vol-fill low" style="width:30%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">6</span></div>
+      <div class="vol-row"><span class="vol-name">Calves</span><span class="vol-bar"><span class="vol-fill low" style="width:25%"></span><span class="vol-range" style="left:50%; right:0"></span></span><span class="vol-n">5</span></div>
+    </div>
+    <div class="grid2">
+      <div class="box">
+        <h3>What got fixed</h3>
+        <ul>
+          <li><b>Arms were at 5 and 5.</b> Compound work gives biceps maybe half the stimulus of a direct set, so it does not fill the gap. Now 9 and 9.</li>
+          <li><b>Abs were at zero.</b> Now 6, loaded and progressing, supersetted into rest periods so they cost no extra time.</li>
+          <li><b>Transverse plane was at zero.</b> Landmine rotations on Thursday.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>What is still short, knowingly</h3>
+        <ul>
+          <li><b>Quads at 7 and hamstrings at 8.</b> The one lower day. Revisit in three months.</li>
+          <li><b>Visible abs are a body fat outcome, not a volume one.</b> The direct work builds the muscle so it is there when body fat drops. No amount of ab volume substitutes for the composition side.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESSION -->
+  <section>
+    <div class="sec-head">
+      <span class="num">04 — PROGRESSION</span>
+      <h2>The block, and what RIR means</h2>
+      <p class="note">Four-week blocks from <b>7 September</b>. The RIR ramp is the progression: the weight does not necessarily change across a block, the proximity to failure does.</p>
+    </div>
+
+    <div class="tw" style="border:1px solid var(--rule); background:var(--card);">
+      <table>
+        <thead><tr><th>Week</th><th>Target RIR</th><th>What that feels like</th></tr></thead>
+        <tbody>
+          <tr><td class="ex">1</td><td class="n">3</td><td>Comfortable. Three reps left in the tank at the end of every set.</td></tr>
+          <tr><td class="ex">2</td><td class="n">2</td><td>Reps start slowing noticeably on the last two of a set.</td></tr>
+          <tr><td class="ex">3</td><td class="n">1</td><td>One rep visibly slower than the last. Hard, never grinding.</td></tr>
+          <tr><td class="ex">4 · deload</td><td class="n">4</td><td>Easy on purpose. This is where the benchmarks land, fresh.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2">
+      <div class="box">
+        <h3>Reading RIR in the moment</h3>
+        <p><b>Watch bar speed.</b> Reps slowing noticeably is 2 to 3 RIR. One rep visibly slower than the last is 1. Having to grind is 0.</p>
+        <ul>
+          <li><b>Percentages would not work here.</b> They assume a known 1RM and a body that performs the same every day. Neither holds: you are not testing maxes, and a five-hour phase shift is running on top of seven working days. RIR self-corrects. On a bad morning RIR 2 just means less weight, and the stimulus is still right.</li>
+          <li><b>Most people underestimate.</b> When it feels like 2 left there are often 4. At 5+ years you will be closer, but expect to be conservative early. Taking an isolation set to actual failure occasionally recalibrates the sense of it.</li>
+          <li><b>Above 15 reps RIR judgment is unreliable</b>, which is why the high-rep isolation work is marked RIR 0 to 1. Take it close to failure and stop overthinking it.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Plyometrics: a different rule</h3>
+        <ul>
+          <li><b>Progress by intensity, not volume.</b> Contacts stay near 50 all year and the exercises get harder. Adding reps to plyometrics turns a power session into bad conditioning.</li>
+          <li><b>Halve them through September</b>, to about 25. They are the most CNS-dependent thing in the programme, and your CNS is exactly what the phase shift is disrupting.</li>
+          <li><b>Depth jumps only after eight consecutive weeks.</b> Highest force exercise in the whole plan and the one with real injury potential if rushed.</li>
+          <li>They are here because <b>they improve running economy</b>, so they serve endurance, which is priority two, rather than power, which is priority four. That is what justifies the slot.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENCHMARKS -->
+  <section>
+    <div class="sec-head">
+      <span class="num">05 — BENCHMARKS</span>
+      <h2>Fixed protocol, one number, zero interpretation</h2>
+      <p class="note">Anything that needs a judgment call to score will not survive three months. Four-month rotation, two body and two mind per month, so there is always a number no more than four months old without ever spending more than one weekend a month testing. <b>The 4-week blocks put every deload on a benchmark weekend, so you test fresh instead of fatigued.</b></p>
+    </div>
+
+    <div class="tw" style="border:1px solid var(--rule); background:var(--card);">
+      <table>
+        <thead><tr><th>Test</th><th>Protocol</th><th>Score</th><th>Placement</th></tr></thead>
+        <tbody>
+          <tr><td class="ex">Cindy</td><td>AMRAP 20 min: 5 pull-ups, 10 push-ups, 15 squats, no stopping</td><td class="n">rounds</td><td class="n">replaces session</td></tr>
+          <tr><td class="ex">Broad jump</td><td>Standing, best of 3, completely fresh</td><td class="n">cm</td><td class="n">Monday, first</td></tr>
+          <tr><td class="ex">Max pull-ups</td><td>One strict set to failure, fresh</td><td class="n">reps</td><td class="n">Friday, first</td></tr>
+          <tr><td class="ex">5K run</td><td>Time trial</td><td class="n">time</td><td class="n">replaces session</td></tr>
+          <tr><td class="ex">400 m swim</td><td>Time trial</td><td class="n">time</td><td class="n">replaces session</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box warn">
+      <h3>Baseline everything on 5 and 6 September</h3>
+      <p>Before the schedule has done anything to you. <b>You will want those numbers in month six and they cannot be reconstructed later.</b></p>
+      <p>The mind benchmarks live in the evening block, not here: The Recall, the Boredom Sit, and the monthly English pitch. The full benchmark battery document was not in the shared snapshot, so the four-month rotation order still needs rebuilding once that list is recovered.</p>
+    </div>
+  </section>
+
+  <!-- EXPECTATIONS -->
+  <section>
+    <div class="sec-head">
+      <span class="num">06 — WHAT TO EXPECT</span>
+      <h2>September is a ramp, not a block</h2>
+    </div>
+    <div class="grid2">
+      <div class="box">
+        <h3>You will be weaker, and it is not a signal</h3>
+        <p>Core temperature bottoms out 2 to 3 hours before habitual wake. During the shift that sits <b>directly on top of the 06:00 training window</b>: coldest tissue, lowest force output, worst coordination.</p>
+        <p><b>Expect three to four weeks of it.</b> Strength tracks core temperature and adapts substantially once the rhythm moves with you. Warm up longer than you think you need to.</p>
+        <p>Real training starts <b>5 October</b>.</p>
+      </div>
+      <div class="box">
+        <h3>The first challenge is attendance, nothing else</h3>
+        <p><b>24 sessions in 4 weeks, twice.</b> Not load, not times. You are building the schedule, and chasing numbers during a five-hour phase shift is how people conclude the schedule does not work.</p>
+        <p>The honest part: seven working days against six training days on a fixed 8 hours. <b>Deep work you love spends the same recovery budget as deep work you do not.</b> Enjoyment changes how it feels, not what it costs.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Landing days.</b> 2 Sept gym at ~50% with technique work and no plyometrics · 3 Sept ~60%, still no plyometrics · 4 Sept the normal September ramp begins and plyometrics are allowed. Movement helps entrainment, so going easy beats total rest, but depth landings on a disrupted CNS with cold tissue is the one combination genuinely likely to hurt you.</p>
+    <p><b>Two things still open.</b> Bodyweight has never been measured, which also blocks any load prescribed as a bodyweight multiple. And the kettlebell technique check is not booked: one session with someone competent, inside the first two weeks.</p>
+    <p style="color:var(--ink-3); font-size:13.5px;">Derived from <code>training.json</code>. If a number here disagrees with that file, the file wins.</p>
+  </footer>
+
+</div>
+</body>
+</html>

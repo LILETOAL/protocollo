@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --paper:#EDEFEA; --card:#F6F7F3; --ink:#171C18; --ink-2:#556056; --ink-3:#808B81;
+    --rule:#CBD1C7; --rule-soft:#DDE1D9;
+    --accent:#A8332A; --accent-bg:#EBDCD8;
+    --leaf:#4B6B3C; --leaf-bg:#DEE6D6;
+    --frost:#3F5F6B; --frost-bg:#DBE4E8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#131714; --card:#1A201B; --ink:#E9EDE7; --ink-2:#9BA69A; --ink-3:#6E7A6E;
+      --rule:#2E362F; --rule-soft:#242B25;
+      --accent:#E4705F; --accent-bg:#33211E;
+      --leaf:#94B47B; --leaf-bg:#202A1D;
+      --frost:#8FB3C2; --frost-bg:#1B262C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#131714; --card:#1A201B; --ink:#E9EDE7; --ink-2:#9BA69A; --ink-3:#6E7A6E;
+    --rule:#2E362F; --rule-soft:#242B25;
+    --accent:#E4705F; --accent-bg:#33211E;
+    --leaf:#94B47B; --leaf-bg:#202A1D;
+    --frost:#8FB3C2; --frost-bg:#1B262C;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Literata", Georgia, "Times New Roman", serif;
+    font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  img { max-width:100%; }
+  .sheet { max-width:960px; margin:0 auto; padding:44px 24px 96px; display:flex; flex-direction:column; gap:48px; }
+
+  h1,h2,h3 { font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0; line-height:1.1; }
+  h1 { font-weight:800; font-size:clamp(32px,6vw,48px); letter-spacing:-.02em; }
+  h2 { font-weight:800; font-size:22px; letter-spacing:-.01em; }
+  h3 { font-weight:700; font-size:16px; }
+  p { margin:0; }
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+  .mono { font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums; }
+
+  header { display:flex; flex-direction:column; gap:16px; }
+  .title-rule { height:3px; width:68px; background:var(--ink); }
+  .standfirst { font-size:17px; color:var(--ink-2); max-width:60ch; }
+  .standfirst strong { color:var(--ink); font-weight:600; }
+
+  .strip { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); }
+  .strip > div { background:var(--card); padding:13px 16px; display:flex; flex-direction:column; gap:3px; }
+  .strip .k { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); }
+  .strip .v { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:17px; }
+  .strip .s { font-size:12.5px; color:var(--ink-3); line-height:1.35; }
+  @media (max-width:720px) { .strip { grid-template-columns:repeat(2,1fr); } }
+
+  section { display:flex; flex-direction:column; gap:14px; }
+  .sec-head { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:12px; border-top:2px solid var(--ink); padding-top:12px; }
+  .sec-head .caption { font-size:13.5px; color:var(--ink-3); max-width:54ch; }
+
+  /* ---- picker ---- */
+  .group-label { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); margin-top:6px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:10px; }
+  .mc {
+    border:1px solid var(--rule); background:var(--card); padding:12px 13px;
+    display:flex; flex-direction:column; gap:8px; transition:border-color .12s, background .12s;
+  }
+  .mc.on { border-color:var(--accent); background:var(--accent-bg); }
+  .mc .nm { font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:14.5px; line-height:1.2; }
+  .mc .meta { font-size:12px; color:var(--ink-3); line-height:1.35; flex:1; }
+  .mc .row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .step { display:flex; align-items:center; gap:2px; }
+  .step button {
+    width:28px; height:28px; border:1px solid var(--rule); background:var(--paper); color:var(--ink);
+    font-family:"JetBrains Mono",monospace; font-size:15px; line-height:1; cursor:pointer; padding:0;
+  }
+  .step button:hover { border-color:var(--accent); color:var(--accent); }
+  .step button:disabled { opacity:.35; cursor:default; }
+  .step button:disabled:hover { border-color:var(--rule); color:var(--ink); }
+  .step .cnt { min-width:30px; text-align:center; font-family:"JetBrains Mono",monospace; font-size:14px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .mc .frz { font-family:"JetBrains Mono",monospace; font-size:9.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:2px 6px; background:var(--frost-bg); color:var(--frost); border-radius:2px; }
+
+  /* ---- output ---- */
+  .out { border:1px solid var(--rule); background:var(--card); }
+  .out-bar {
+    padding:13px 16px; border-bottom:1px solid var(--rule);
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .out-count { font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:600; }
+  .btns { display:flex; gap:8px; }
+  .btn {
+    font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    padding:9px 14px; border:1px solid var(--accent); background:var(--accent); color:var(--paper);
+    cursor:pointer; transition:opacity .12s;
+  }
+  .btn:hover { opacity:.85; }
+  .btn:disabled { opacity:.3; cursor:default; }
+  .btn.ghost { background:transparent; color:var(--ink-2); border-color:var(--rule); }
+  .btn.ghost:hover { color:var(--accent); border-color:var(--accent); opacity:1; }
+  .out-body { padding:16px; }
+  .empty { color:var(--ink-3); font-size:14.5px; }
+  .aisle { margin-bottom:16px; }
+  .aisle:last-child { margin-bottom:0; }
+  .aisle h4 {
+    margin:0 0 6px; font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--accent);
+    border-bottom:1px solid var(--rule-soft); padding-bottom:5px;
+  }
+  .aisle ul { list-style:none; margin:0; padding:0; }
+  .aisle li { display:flex; justify-content:space-between; gap:14px; padding:4px 0; font-size:14.5px; }
+  .aisle li .q { font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-2); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .fromstock { padding:10px 12px; background:var(--frost-bg); color:var(--frost); font-size:13.5px; margin-top:4px; }
+
+  /* ---- tables ---- */
+  .tw { overflow-x:auto; border:1px solid var(--rule); background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:14.5px; }
+  th,td { text-align:left; padding:10px 15px; border-bottom:1px solid var(--rule-soft); vertical-align:top; }
+  thead th { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:0; }
+  .n { font-family:"JetBrains Mono",monospace; font-size:13px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .name { font-weight:600; }
+  .why { color:var(--ink-3); font-size:13.5px; }
+  .no { color:var(--accent); font-family:"JetBrains Mono",monospace; font-size:12.5px; font-weight:700; }
+  .g { font-family:"JetBrains Mono",monospace; font-size:12.5px; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  #rotation table { min-width:720px; }
+  #rotation ul { list-style:none; margin:0; padding:0; }
+  #rotation .meal { font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); white-space:nowrap; }
+  #rotation .mealtime { display:block; font-size:13px; color:var(--accent); letter-spacing:0; text-transform:none; margin-top:2px; }
+  #rotation tfoot td { border-top:1px solid var(--rule); background:var(--leaf-bg); color:var(--leaf); font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:600; }
+  #storage table, #reserves table, #rules table, #burritos table { min-width:600px; }
+
+  .note { font-size:14.5px; color:var(--ink-2); max-width:72ch; }
+  .note b { color:var(--ink); font-weight:600; }
+
+  footer { border-top:2px solid var(--ink); padding-top:16px; display:flex; flex-direction:column; gap:9px; font-size:14px; color:var(--ink-2); }
+  footer b { color:var(--ink); font-weight:600; }
+  code { font-family:"JetBrains Mono",monospace; font-size:.9em; background:var(--rule-soft); padding:1px 5px; border-radius:2px; }
+
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+  @media print {
+    body { background:#fff; color:#000; }
+    .sheet { padding:0; gap:26px; max-width:none; }
+    .cards, .btns { display:none; }
+    .tw, .strip > div, .out { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">Protocol · food · calibrated on 80 kg</p>
+    <h1>Food Protocol</h1>
+    <div class="title-rule"></div>
+    <p class="standfirst">Which foods, on which days, what sits in the freezer for when a meal is missed. <strong>Plate weights are cooked; the shopping list is raw</strong>, which is how you buy it.</p>
+
+    <div class="strip">
+      <div><span class="k">Eating window</span><span class="v">09:30 → 16:30</span><span class="s">17 hour fast, training at hour 13.5</span></div>
+      <div><span class="k">Coffee</span><span class="v">04:00 → 10:00</span><span class="s">up to 4 espressos, then zero</span></div>
+      <div><span class="k">Water</span><span class="v">04:00 → 18:30</span><span class="s">3 to 3.5 L, then stop</span></div>
+      <div><span class="k">Protein / day</span><span class="v">165–185 g</span><span class="s">2600–2900 kcal</span></div>
+    </div>
+  </header>
+
+  <!-- ============ PICKER ============ -->
+  <section id="builder">
+    <div class="sec-head">
+      <h2>Build a shopping list</h2>
+      <p class="caption">Pick how many times you will eat each thing. The list below adds it up, converts to raw weights, rounds to what shops actually sell, and copies in Italian.</p>
+    </div>
+
+    <p class="group-label">Meal 1 · 09:30</p>
+    <div class="cards" data-group="m1"></div>
+
+    <p class="group-label">Meal 2 · 16:30</p>
+    <div class="cards" data-group="m2"></div>
+
+    <p class="group-label">Shake, snack, burritos</p>
+    <div class="cards" data-group="other"></div>
+
+    <div class="out">
+      <div class="out-bar">
+        <span class="out-count" id="count">Nothing selected</span>
+        <span class="btns">
+          <button class="btn ghost" id="clear" type="button">Clear</button>
+          <button class="btn" id="copy" type="button" disabled>Copy list · Italian</button>
+        </span>
+      </div>
+      <div class="out-body" id="list"><p class="empty">Pick some meals above and the list builds itself here.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ DAYS ============ -->
+  <section id="rotation">
+    <div class="sec-head">
+      <h2>On which days</h2>
+      <p class="caption">The full week, every slot with every ingredient, has its own page.</p>
+    </div>
+    <p class="note"><a href="week.html" style="color:var(--accent); font-weight:600;">Open the week &rarr;</a></p>
+  </section>
+
+  <!-- ============ BURRITOS ============ -->
+  <section id="burritos">
+    <div class="sec-head">
+      <h2>Burritos · the missed-meal answer</h2>
+      <p class="caption">A whole meal in one piece, vacuum sealed one by one, no equipment to reheat and no decisions to make. Four variants so the freezer never holds one flavour.</p>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Variant</th><th>Per unit</th><th>Freezes</th><th>Why it is on the list</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">Beef &amp; potato<span class="why" style="display:block;font-weight:400">the original</span></td>
+            <td class="why">150 g lean beef mince · 100 g potato · 1.5 eggs · 10 g cottage cheese · 8 g tomato paste · 10 ml Worcestershire · 1 large tortilla · 2.5 g sriracha mayo</td>
+            <td class="n">good</td>
+            <td class="why">Highest protein of the four. Potato is the weak point: it only survives the freezer if it went in browned and dry.</td>
+          </tr>
+          <tr>
+            <td class="name">Pulled chicken, rice &amp; black bean</td>
+            <td class="why">160 g chicken thigh · 40 g dry rice · 40 g black beans · 1 egg · 10 g cottage cheese · 1 large tortilla · smoked paprika, cumin</td>
+            <td class="n">best</td>
+            <td class="why">Rice freezes and reheats better than any potato. Beans add the fibre the beef version lacks.</td>
+          </tr>
+          <tr>
+            <td class="name">Turkey &amp; sweet potato, chipotle</td>
+            <td class="why">150 g turkey mince · 110 g sweet potato · 1.5 eggs · 10 g cottage cheese · 5 g olive oil · 1 large tortilla · chipotle</td>
+            <td class="n">good</td>
+            <td class="why">The leanest, which is why it carries added oil. Sweet potato holds up better than white.</td>
+          </tr>
+          <tr>
+            <td class="name">Lentil, mushroom &amp; rice<span class="why" style="display:block;font-weight:400">meatless</span></td>
+            <td class="why">50 g dry lentils · 80 g mushrooms · 40 g dry rice · 1.5 eggs · 15 g cottage cheese · 1 large tortilla</td>
+            <td class="n">best</td>
+            <td class="why">Cheapest, highest fibre, and the one that stops four beef weeks in a row. Lowest protein, so pair it with the shake.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>Three techniques that decide whether they survive the freezer, and they apply to all four.</b> Brown the potato or rice properly dry, never soft and steamed. Scramble the eggs soft, pull them off the heat before they look done, and fold in the blended cottage cheese, because that dairy is what stops frozen egg weeping on thaw. Cool the filling completely before rolling, or condensation inside the vacuum bag falls the tortilla apart.</p>
+    <p class="note"><b>Reheat:</b> 20 minutes at 180 °C from frozen, or 3 minutes a side in a dry pan once thawed. Never a microwave. And never eaten alone: they are protein dense and carb light, so they need oats and a banana beside them.</p>
+  </section>
+
+  <!-- ============ RESERVES ============ -->
+  <section id="reserves">
+    <div class="sec-head">
+      <h2>Reserves</h2>
+      <p class="caption">Deliberately more than you need. They exist for the missed cook, the bad day, the change of plan.</p>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Item</th><th>Target</th><th>Remake at</th><th>Where</th><th>Keeps</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Burritos, mixed variants</td><td class="n">10</td><td class="n">4 left</td><td class="why">Freezer, vacuum sealed one by one</td><td class="n">90 days</td></tr>
+          <tr><td class="name">Meatballs in sauce</td><td class="n">6 portions</td><td class="n">2 left</td><td class="why">Freezer, plastic container</td><td class="n">90 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>The rule that keeps them alive: reserves do not enter the ordinary rotation.</b> Eat them on rotation and they are not reserves, they are the menu, and the first surprise leaves you with nothing. Run <code>./pantry.py</code> to see current levels.</p>
+  </section>
+
+  <!-- ============ FREEZER ============ -->
+  <section id="storage">
+    <div class="sec-head">
+      <h2>What can go in the freezer</h2>
+      <p class="caption">The emergency shelf. Everything here reheats into a real meal; everything in the second table does not.</p>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Freezes well</th><th>Keeps</th><th>How</th><th>Back to a meal by</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Burritos, all four variants</td><td class="n">90 days</td><td class="why">Vacuum sealed individually, laid flat</td><td class="why">20 min at 180 °C from frozen</td></tr>
+          <tr><td class="name">Meatballs in sauce</td><td class="n">90 days</td><td class="why">Container, sauce covering them</td><td class="why">Pan from thawed, pasta cooked fresh</td></tr>
+          <tr><td class="name">Chili con carne</td><td class="n">90 days</td><td class="why">Container or vacuum after freezing solid</td><td class="why">Pan, over rice</td></tr>
+          <tr><td class="name">Pulled chicken</td><td class="n">90 days</td><td class="why">Vacuum sealed, laid flat</td><td class="why">Pan, over rice</td></tr>
+          <tr><td class="name">Lentil bolognese</td><td class="n">90 days</td><td class="why">Container</td><td class="why">Pan, over pasta</td></tr>
+          <tr><td class="name">Cooked beef mince, plain</td><td class="n">90 days</td><td class="why">Vacuum sealed, laid flat</td><td class="why">Pan, into a bowl with anything</td></tr>
+          <tr><td class="name">Tomato and shakshuka sauce</td><td class="n">90 days</td><td class="why">Glass, never aluminium</td><td class="why">Pan, crack eggs in</td></tr>
+          <tr><td class="name">Cooked rice</td><td class="n">30 days</td><td class="why">Cool within an hour, freeze immediately, flat</td><td class="why">Straight from frozen in a pan</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tw" style="margin-top:6px;">
+      <table>
+        <thead><tr><th>Never freeze</th><th>Fridge</th><th>What goes wrong</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Potatoes and sweet potato</td><td class="n">3 days</td><td class="why">Grainy and watery. The exception is inside a burrito, where the texture is masked</td></tr>
+          <tr><td class="name">Cooked vegetables</td><td class="n">3 days</td><td class="why">Go limp on thaw</td></tr>
+          <tr><td class="name">Wilted greens</td><td class="n">2 days</td><td class="why">Collapse to nothing</td></tr>
+          <tr><td class="name">Raw baby spinach</td><td class="n">4 days</td><td class="why">Only usable cooked afterwards, so it stops being a raw leaf</td></tr>
+          <tr><td class="name">Fruit salad</td><td class="n">3 days</td><td class="why">Cell walls burst, it thaws to juice</td></tr>
+          <tr><td class="name">Opened yoghurt</td><td class="n">5 days</td><td class="why">Splits</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>Vacuum sealing does not extend fridge life.</b> Removing oxygen selects for different bacteria, it does not remove them. Four days, then freezer or bin. In the freezer it is a real gain: one to two months becomes three to six. Never on liquids, they get pulled into the machine, so freeze the sauce solid first and seal the block.</p>
+  </section>
+
+  <!-- ============ RULES ============ -->
+  <section id="rules">
+    <div class="sec-head">
+      <h2>Standing rules</h2>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Olive oil raw in the bowl, 1 tbsp per meal, never in the pan</td><td class="why">The fat dose stays measured and the oil stays good</td></tr>
+          <tr><td class="name">A different leafy green every day</td><td class="why">Spinach daily is too much oxalate: it binds calcium and magnesium in the gut</td></tr>
+          <tr><td class="name">30 g of carbs at 05:45 on swim and long-run days only</td><td class="why">Muscle glycogen survives the fast for lifting. Endurance work does not</td></tr>
+          <tr><td class="name">Weigh daily, read the weekly average</td><td class="why">Down more than 0.3 kg: add 100 g of potato or pasta to Meal 2. Never add a fourth feeding</td></tr>
+          <tr><td class="name">Ignore the scale until mid October</td><td class="why">Creatine adds 1–2 kg of water and masks a real drop</td></tr>
+          <tr><td class="name">Yoghurt: ≥ 9 g protein, ≤ 5 g sugar per 100 g, milk and cultures only</td><td class="why">Anything labelled "alla greca" is ordinary yoghurt thickened</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Open.</b> Bodyweight never measured, so every gram here is an estimate on 80 kg · burrito macros stated but not verified, the carbohydrate figure in particular · bloods not done: lipid panel with ApoB, vitamin D, ferritin, B12.</p>
+    <p style="color:var(--ink-3); font-size:13px;">Derived from <code>nutrition.json</code>. If a number here disagrees with that file, the file wins. The operational sheet Enit works from is <code>scheda-enit-2026-09-02.html</code>, in Italian.</p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* Shopping quantities are RAW. Where a plate weight differs from what you buy
+   (meat loses ~25% cooking, potatoes ~10%), the raw number is what lives here. */
+const FOODS = {
+  beef:        { it:"Macinato di manzo magro (max 5%)", aisle:"carne",      unit:"g",  step:100 },
+  chicken:     { it:"Sovracosce di pollo disossate",    aisle:"carne",      unit:"g",  step:100 },
+  turkey:      { it:"Macinato di tacchino",             aisle:"carne",      unit:"g",  step:100 },
+  cod:         { it:"Filetto di merluzzo",              aisle:"carne",      unit:"g",  step:100 },
+  salmon:      { it:"Filetto di salmone",               aisle:"carne",      unit:"g",  step:100 },
+  eggs:        { it:"Uova",                             aisle:"latticini",  unit:"pz", step:6   },
+  cottage:     { it:"Fiocchi di latte",                 aisle:"latticini",  unit:"g",  step:100 },
+  skyr:        { it:"Skyr o yogurt greco colato 0%",    aisle:"latticini",  unit:"g",  step:250 },
+  feta:        { it:"Feta",                             aisle:"latticini",  unit:"g",  step:100 },
+  parmesan:    { it:"Parmigiano",                       aisle:"latticini",  unit:"g",  step:50  },
+  milk:        { it:"Latte intero",                     aisle:"latticini",  unit:"ml", step:500 },
+  potato:      { it:"Patate a pasta gialla",            aisle:"ortofrutta", unit:"g",  step:250 },
+  sweetpotato: { it:"Patata dolce",                     aisle:"ortofrutta", unit:"g",  step:250 },
+  greenbeans:  { it:"Fagiolini",                        aisle:"ortofrutta", unit:"g",  step:250 },
+  courgette:   { it:"Zucchine",                         aisle:"ortofrutta", unit:"g",  step:250 },
+  broccoli:    { it:"Broccoli",                         aisle:"ortofrutta", unit:"g",  step:250 },
+  asparagus:   { it:"Asparagi",                         aisle:"ortofrutta", unit:"g",  step:250 },
+  mushrooms:   { it:"Funghi champignon",                aisle:"ortofrutta", unit:"g",  step:250 },
+  chard:       { it:"Bietola",                          aisle:"ortofrutta", unit:"mazzo", step:1 },
+  cavolonero:  { it:"Cavolo nero",                      aisle:"ortofrutta", unit:"mazzo", step:1 },
+  spinach:     { it:"Spinacino in busta",               aisle:"ortofrutta", unit:"g",  step:200 },
+  rocket:      { it:"Rucola",                           aisle:"ortofrutta", unit:"g",  step:125 },
+  tomatoes:    { it:"Pomodorini",                       aisle:"ortofrutta", unit:"g",  step:250 },
+  pepper:      { it:"Peperone rosso",                   aisle:"ortofrutta", unit:"pz", step:1   },
+  onion:       { it:"Cipolle dorate",                   aisle:"ortofrutta", unit:"pz", step:1   },
+  avocado:     { it:"Avocado",                          aisle:"ortofrutta", unit:"pz", step:1   },
+  banana:      { it:"Banane",                           aisle:"ortofrutta", unit:"pz", step:1   },
+  blueberries: { it:"Mirtilli",                         aisle:"ortofrutta", unit:"g",  step:125 },
+  melon:       { it:"Melone",                           aisle:"ortofrutta", unit:"pz", step:1   },
+  grapes:      { it:"Uva bianca",                       aisle:"ortofrutta", unit:"g",  step:250 },
+  apple:       { it:"Mele",                             aisle:"ortofrutta", unit:"pz", step:1   },
+  lemon:       { it:"Limoni",                           aisle:"ortofrutta", unit:"pz", step:1   },
+  wholefruit:  { it:"Frutta intera da spuntino (mela, pera, arancia)", aisle:"ortofrutta", unit:"pz", step:1 },
+  sourdough:   { it:"Pane a lievitazione naturale",     aisle:"dispensa",   unit:"g",  step:250 },
+  pasta:       { it:"Pasta corta secca",                aisle:"dispensa",   unit:"g",  step:250 },
+  rice:        { it:"Riso",                             aisle:"dispensa",   unit:"g",  step:250 },
+  oats:        { it:"Fiocchi d'avena",                  aisle:"dispensa",   unit:"g",  step:500 },
+  lentils:     { it:"Lenticchie secche",                aisle:"dispensa",   unit:"g",  step:250 },
+  blackbeans:  { it:"Fagioli neri in scatola",          aisle:"dispensa",   unit:"g",  step:400 },
+  passata:     { it:"Pomodori pelati",                  aisle:"dispensa",   unit:"g",  step:400 },
+  tomatopaste: { it:"Concentrato di pomodoro",          aisle:"dispensa",   unit:"g",  step:50  },
+  breadcrumbs: { it:"Pangrattato",                      aisle:"dispensa",   unit:"g",  step:100 },
+  tortilla:    { it:"Tortilla grandi",                  aisle:"dispensa",   unit:"pz", step:8   },
+  walnuts:     { it:"Noci sgusciate",                   aisle:"dispensa",   unit:"g",  step:100 },
+  almonds:     { it:"Mandorle",                         aisle:"dispensa",   unit:"g",  step:100 },
+  honey:       { it:"Miele",                            aisle:"dispensa",   unit:"g",  step:250 },
+  oil:         { it:"Olio extravergine d'oliva",        aisle:"dispensa",   unit:"ml", step:250 },
+  worcester:   { it:"Salsa Worcestershire",             aisle:"dispensa",   unit:"ml", step:150 },
+  srirachamayo:{ it:"Maionese sriracha",                aisle:"dispensa",   unit:"g",  step:100 },
+  whey:        { it:"Proteine whey",                    aisle:"dispensa",   unit:"g",  step:1000 }
+};
+
+const AISLES = [
+  ["carne",      "Banco carne"],
+  ["latticini",  "Uova e latticini"],
+  ["ortofrutta", "Ortofrutta"],
+  ["dispensa",   "Dispensa"]
+];
+
+const MEALS = [
+  { id:"m1_eggs", g:"m1", nm:"Eggs, sourdough, avocado", meta:"5 eggs · 4 slices · ½ avocado · cottage cheese. 10 minutes, never batched.",
+    ing:{ eggs:5, sourdough:200, avocado:0.5, tomatoes:150, cottage:100, oil:10 } },
+  { id:"m1_shakshuka", g:"m1", nm:"Shakshuka", meta:"4 eggs cracked into sauce Enit already made · feta · 3 slices.",
+    ing:{ eggs:4, passata:250, pepper:0.5, onion:0.5, feta:60, sourdough:150, cottage:100 } },
+  { id:"m1_skyr", g:"m1", nm:"Skyr and oats", meta:"The only egg-free Meal 1. Keeps the weekly egg average under 4 a day.",
+    ing:{ skyr:300, oats:120, walnuts:30, almonds:20, blueberries:125, honey:20 } },
+  { id:"m1_burrito", g:"m1", nm:"Burrito + oats", meta:"From the freezer. Add oats and a banana, it is carb light on its own.", stock:"burrito",
+    ing:{ oats:80, banana:1, honey:15 } },
+
+  { id:"m2_meatballs", g:"m2", nm:"Meatballs in sauce, pasta", meta:"Green beans · chard. Pasta cooked on the day, never in advance.", frz:true,
+    ing:{ beef:250, breadcrumbs:35, eggs:0.5, parmesan:20, passata:200, onion:0.25, pasta:100, greenbeans:250, chard:0.5, oil:12 } },
+  { id:"m2_chicken", g:"m2", nm:"Roast chicken and potatoes", meta:"Courgette · raw baby spinach.",
+    ing:{ chicken:260, potato:500, courgette:250, spinach:100, oil:12 } },
+  { id:"m2_beefbowl", g:"m2", nm:"Beef bowl", meta:"Sweet potato · broccoli · cavolo nero · cottage cheese · avocado.", frz:true,
+    ing:{ beef:200, sweetpotato:450, broccoli:250, cavolonero:0.5, cottage:100, avocado:0.5 } },
+  { id:"m2_cod", g:"m2", nm:"Baked cod and potatoes", meta:"Asparagus · chard. Fresh only, cod does not reheat well.",
+    ing:{ cod:220, potato:450, asparagus:200, chard:0.5, oil:12, lemon:1 } },
+  { id:"m2_salmon", g:"m2", nm:"Baked salmon and potatoes", meta:"Asparagus · chard. Saturday, cooked and eaten the same day. No added oil, the fish brings the fat.",
+    ing:{ salmon:230, potato:450, asparagus:200, chard:0.5, lemon:0.5 } },
+  { id:"m2_pulled", g:"m2", nm:"Pulled chicken, rice, black beans", meta:"Smoked paprika and cumin. Freezes and reheats cleanly.", frz:true,
+    ing:{ chicken:260, rice:110, blackbeans:150, pepper:0.5, spinach:100, oil:12 } },
+  { id:"m2_chili", g:"m2", nm:"Chili con carne, rice", meta:"The best thing in the freezer bank. Improves after a week.", frz:true,
+    ing:{ beef:220, blackbeans:200, passata:200, rice:110, onion:0.5, rocket:100 } },
+  { id:"m2_lentil", g:"m2", nm:"Lentil bolognese, pasta", meta:"Meatless, highest fibre, cheapest. Pair it with a full shake.", frz:true,
+    ing:{ lentils:120, mushrooms:200, passata:200, onion:0.5, pasta:100, parmesan:20, rocket:100, oil:12 } },
+
+  { id:"shake", g:"other", nm:"Shake · 12:00", meta:"Whey, milk, creatine, banana. Every day without exception.",
+    ing:{ whey:35, milk:300, banana:1 } },
+  { id:"snack_salad", g:"other", nm:"Snack · fruit salad", meta:"Cooking day and the day after only. Lemon juice on top.",
+    ing:{ melon:0.25, grapes:60, apple:0.5, blueberries:40, lemon:0.5, skyr:200 } },
+  { id:"snack_whole", g:"other", nm:"Snack · whole fruit", meta:"From day 3, when cut fruit starts weeping.",
+    ing:{ wholefruit:1, skyr:200 } },
+  { id:"b_beef", g:"other", nm:"Burrito · beef &amp; potato", meta:"The original. Highest protein of the four.", frz:true,
+    ing:{ beef:150, potato:110, eggs:1.5, cottage:10, tomatopaste:8, worcester:10, tortilla:1, srirachamayo:2.5, onion:0.1 } },
+  { id:"b_chicken", g:"other", nm:"Burrito · chicken, rice, bean", meta:"Freezes best of the four. Rice beats potato in a freezer.", frz:true,
+    ing:{ chicken:160, rice:40, blackbeans:40, eggs:1, cottage:10, tortilla:1, pepper:0.15 } },
+  { id:"b_turkey", g:"other", nm:"Burrito · turkey &amp; sweet potato", meta:"The leanest, which is why it carries added oil.", frz:true,
+    ing:{ turkey:150, sweetpotato:110, eggs:1.5, cottage:10, oil:5, tortilla:1 } },
+  { id:"b_lentil", g:"other", nm:"Burrito · lentil &amp; mushroom", meta:"Meatless. Stops four beef weeks in a row.", frz:true,
+    ing:{ lentils:50, mushrooms:80, rice:40, eggs:1.5, cottage:15, tortilla:1 } }
+];
+
+const KEY = "food-protocol-picks";
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { picks = {}; }
+
+const listEl  = document.getElementById("list");
+const countEl = document.getElementById("count");
+const copyEl  = document.getElementById("copy");
+
+function renderCards() {
+  document.querySelectorAll(".cards").forEach(function (box) {
+    const group = box.dataset.group;
+    box.innerHTML = "";
+    MEALS.filter(function (m) { return m.g === group; }).forEach(function (m) {
+      const n = picks[m.id] || 0;
+      const el = document.createElement("div");
+      el.className = "mc" + (n > 0 ? " on" : "");
+      el.innerHTML =
+        '<div class="nm">' + m.nm + "</div>" +
+        '<div class="meta">' + m.meta + "</div>" +
+        '<div class="row">' +
+          (m.frz ? '<span class="frz">freezes</span>' : "<span></span>") +
+          '<span class="step">' +
+            '<button type="button" data-id="' + m.id + '" data-d="-1" aria-label="One fewer ' + m.nm.replace(/"/g, "") + '"' + (n === 0 ? " disabled" : "") + ">−</button>" +
+            '<span class="cnt">' + n + "</span>" +
+            '<button type="button" data-id="' + m.id + '" data-d="1" aria-label="One more ' + m.nm.replace(/"/g, "") + '">+</button>' +
+          "</span>" +
+        "</div>";
+      box.appendChild(el);
+    });
+  });
+}
+
+function round(v, step) { return step > 0 ? Math.ceil(v / step) * step : Math.ceil(v); }
+
+function totals() {
+  const acc = {}, stock = [];
+  MEALS.forEach(function (m) {
+    const n = picks[m.id] || 0;
+    if (!n) return;
+    if (m.stock) stock.push(n + " × " + m.stock);
+    Object.keys(m.ing).forEach(function (k) { acc[k] = (acc[k] || 0) + m.ing[k] * n; });
+  });
+  return { acc: acc, stock: stock };
+}
+
+function render() {
+  renderCards();
+  const t = totals();
+  const keys = Object.keys(t.acc);
+  const nMeals = Object.keys(picks).reduce(function (s, k) { return s + picks[k]; }, 0);
+
+  countEl.textContent = nMeals === 0 ? "Nothing selected"
+    : nMeals + (nMeals === 1 ? " meal selected" : " meals selected");
+  copyEl.disabled = keys.length === 0;
+
+  if (!keys.length) {
+    listEl.innerHTML = '<p class="empty">Pick some meals above and the list builds itself here.</p>';
+    return;
+  }
+
+  let html = "";
+  AISLES.forEach(function (pair) {
+    const rows = keys.filter(function (k) { return FOODS[k].aisle === pair[0]; })
+                     .sort(function (a, b) { return FOODS[a].it.localeCompare(FOODS[b].it); });
+    if (!rows.length) return;
+    html += '<div class="aisle"><h4>' + pair[1] + "</h4><ul>";
+    rows.forEach(function (k) {
+      const f = FOODS[k];
+      html += "<li><span>" + f.it + '</span><span class="q">' + round(t.acc[k], f.step) + " " + f.unit + "</span></li>";
+    });
+    html += "</ul></div>";
+  });
+  if (t.stock.length) {
+    html += '<div class="fromstock"><b>From the freezer, not the shop:</b> ' + t.stock.join(" · ") + "</div>";
+  }
+  listEl.innerHTML = html;
+}
+
+function asText() {
+  const t = totals();
+  const keys = Object.keys(t.acc);
+  const nMeals = Object.keys(picks).reduce(function (s, k) { return s + picks[k]; }, 0);
+  const d = new Date();
+  const pad = function (x) { return String(x).padStart(2, "0"); };
+  let out = "LISTA SPESA — " + nMeals + " pasti\n" +
+            pad(d.getDate()) + "/" + pad(d.getMonth() + 1) + "/" + d.getFullYear() + "\n" +
+            "I pesi sono a crudo.\n";
+  AISLES.forEach(function (pair) {
+    const rows = keys.filter(function (k) { return FOODS[k].aisle === pair[0]; })
+                     .sort(function (a, b) { return FOODS[a].it.localeCompare(FOODS[b].it); });
+    if (!rows.length) return;
+    out += "\n" + pair[1].toUpperCase() + "\n";
+    rows.forEach(function (k) {
+      const f = FOODS[k];
+      out += "- " + f.it + ": " + round(t.acc[k], f.step) + " " + f.unit + "\n";
+    });
+  });
+  if (t.stock.length) out += "\nDAL FREEZER, NON DA COMPRARE\n- " + t.stock.join("\n- ") + "\n";
+  return out;
+}
+
+async function copy() {
+  const text = asText();
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch (e) {
+    // file:// or a browser without permission: fall back to the old way
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
+    document.body.removeChild(ta);
+  }
+  const label = copyEl.textContent;
+  copyEl.textContent = ok ? "Copied" : "Press ⌘C";
+  if (!ok) { window.prompt("Copy the list:", text); }
+  setTimeout(function () { copyEl.textContent = label; }, 1600);
+}
+
+document.addEventListener("click", function (ev) {
+  const b = ev.target.closest("button[data-id]");
+  if (!b) return;
+  const id = b.dataset.id;
+  const next = Math.max(0, (picks[id] || 0) + Number(b.dataset.d));
+  if (next === 0) { delete picks[id]; } else { picks[id] = next; }
+  try { localStorage.setItem(KEY, JSON.stringify(picks)); } catch (e) { /* private window */ }
+  render();
+});
+
+document.getElementById("clear").addEventListener("click", function () {
+  picks = {};
+  try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+  render();
+});
+
+copyEl.addEventListener("click", copy);
+render();
+</script>
+</body>
+</html>

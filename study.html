@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Last Hour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --paper:#EDEFEA; --card:#F6F7F3; --ink:#171C18; --ink-2:#556056; --ink-3:#808B81;
+    --rule:#CBD1C7; --rule-soft:#DDE1D9;
+    --accent:#8A5A18; --accent-bg:#EEE2CC;
+    --warn-bg:#EFE0DA; --warn-ink:#7A3524;
+    --calm:#3F5F6B; --calm-bg:#DBE4E8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#131714; --card:#1A201B; --ink:#E9EDE7; --ink-2:#9BA69A; --ink-3:#6E7A6E;
+      --rule:#2E362F; --rule-soft:#242B25;
+      --accent:#D9A855; --accent-bg:#2C2416;
+      --warn-bg:#2E1D18; --warn-ink:#E0907A;
+      --calm:#8FB3C2; --calm-bg:#1B262C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#131714; --card:#1A201B; --ink:#E9EDE7; --ink-2:#9BA69A; --ink-3:#6E7A6E;
+    --rule:#2E362F; --rule-soft:#242B25;
+    --accent:#D9A855; --accent-bg:#2C2416;
+    --warn-bg:#2E1D18; --warn-ink:#E0907A;
+    --calm:#8FB3C2; --calm-bg:#1B262C;
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Literata", Georgia, "Times New Roman", serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  img { max-width:100%; }
+  .sheet { max-width:900px; margin:0 auto; padding:48px 24px 96px; display:flex; flex-direction:column; gap:56px; }
+
+  h1,h2,h3 { font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0; line-height:1.1; }
+  h1 { font-weight:800; font-size:clamp(34px,6.5vw,52px); letter-spacing:-.02em; }
+  h2 { font-weight:800; font-size:24px; letter-spacing:-.01em; }
+  h3 { font-weight:700; font-size:17px; }
+  p { margin:0; }
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,Menlo,monospace; font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+
+  header { display:flex; flex-direction:column; gap:18px; }
+  .title-rule { height:3px; width:68px; background:var(--ink); }
+  .standfirst { font-size:18px; color:var(--ink-2); max-width:62ch; }
+  .standfirst strong { color:var(--ink); font-weight:600; }
+
+  /* the hour, split in two */
+  .split { display:grid; grid-template-columns:45fr 15fr; gap:1px; background:var(--rule); border:1px solid var(--rule); }
+  .split > div { background:var(--card); padding:18px 20px; display:flex; flex-direction:column; gap:6px; }
+  .split .t { font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; letter-spacing:.08em; color:var(--accent); }
+  .split .h { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:19px; }
+  .split .w { font-size:14px; color:var(--ink-2); line-height:1.45; }
+  .split .quiet { background:var(--calm-bg); }
+  .split .quiet .t { color:var(--calm); }
+  @media (max-width:640px) { .split { grid-template-columns:1fr; } }
+
+  section { display:flex; flex-direction:column; gap:22px; }
+  .sec-head { display:flex; flex-direction:column; gap:8px; border-top:2px solid var(--ink); padding-top:14px; }
+  .sec-head .num { font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--accent); }
+  .sec-head .note { font-size:15px; color:var(--ink-2); max-width:66ch; }
+  .sec-head .note b { color:var(--ink); font-weight:600; }
+
+  /* week strip */
+  .week { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); }
+  .week > div { background:var(--card); padding:13px 10px; display:flex; flex-direction:column; gap:5px; min-height:96px; }
+  .week .d { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+  .week .s { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:15px; line-height:1.2; }
+  .week .x { font-size:11.5px; color:var(--ink-3); line-height:1.3; margin-top:auto; }
+  .week .en { border-top:3px solid var(--accent); }
+  .week .zh { border-top:3px solid var(--calm); }
+  .week .plan { background:var(--rule-soft); }
+  @media (max-width:860px) { .week { grid-template-columns:repeat(2,1fr); } }
+
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:760px) { .grid2 { grid-template-columns:1fr; } }
+  .box { border:1px solid var(--rule); background:var(--card); padding:18px 20px; display:flex; flex-direction:column; gap:11px; }
+  .box.warn { background:var(--warn-bg); border-color:transparent; }
+  .box.warn h3, .box.warn li, .box.warn p { color:var(--warn-ink); }
+  .box.calm { background:var(--calm-bg); border-color:transparent; }
+  .box ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.5; }
+  .box ul li { padding-left:18px; position:relative; }
+  .box ul li::before { content:""; position:absolute; left:0; top:.62em; width:7px; height:1.5px; background:currentColor; opacity:.55; }
+  .box p { font-size:14.5px; color:var(--ink-2); }
+  .box.warn p, .box.calm p { color:inherit; }
+
+  .tw { overflow-x:auto; border:1px solid var(--rule); background:var(--card); }
+  table { border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px; }
+  th,td { text-align:left; padding:11px 18px; border-bottom:1px solid var(--rule-soft); vertical-align:top; }
+  thead th { font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:600; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:0; }
+  td.n { font-family:"JetBrains Mono",monospace; font-variant-numeric:tabular-nums; font-size:13.5px; white-space:nowrap; }
+  td.name { font-weight:600; }
+
+  /* phase timeline */
+  .phases { display:flex; flex-direction:column; }
+  .phase { display:grid; grid-template-columns:96px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid var(--rule-soft); }
+  .phase:first-child { border-top:1px solid var(--rule-soft); }
+  .phase-when { font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; color:var(--accent); padding-top:3px; }
+  .phase-body { display:flex; flex-direction:column; gap:7px; }
+  .phase-body p { font-size:14.5px; color:var(--ink-2); max-width:68ch; }
+  .phase-body p b { color:var(--ink); font-weight:600; }
+
+  .tag { font-family:"JetBrains Mono",monospace; font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:3px 7px; border-radius:2px; }
+  .t-en { background:var(--accent-bg); color:var(--accent); }
+  .t-zh { background:var(--calm-bg); color:var(--calm); }
+
+  footer { border-top:2px solid var(--ink); padding-top:18px; display:flex; flex-direction:column; gap:10px; font-size:14.5px; color:var(--ink-2); }
+  footer b { color:var(--ink); font-weight:600; }
+  code { font-family:"JetBrains Mono",monospace; font-size:.9em; background:var(--rule-soft); padding:1px 5px; border-radius:2px; }
+
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  @media print {
+    body { background:#fff; color:#000; }
+    .sheet { padding:0; gap:32px; max-width:none; }
+    .box, .week > div, .split > div, .phase { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">Protocol · study · 18:30 to 19:30, then wind down</p>
+    <h1>The Last Hour</h1>
+    <div class="title-rule"></div>
+    <p class="standfirst">English and Chinese, <strong>outdoors, walking, audio only, no screen</strong>. The hour does two jobs at once, and that is why it is placed here rather than in the morning.</p>
+
+    <div class="box">
+      <h3>Why the end of the day is the right place</h3>
+      <p>Receptive language work is <b>auditory and motor rather than executive</b>, so it does not spike arousal the way problem solving does. It belongs where your brain is already used up.</p>
+      <p>And with a five minute commute you have <b>no buffer at all</b> between desk brain and sleep brain. Arousal does not fall from a standing start in an hour: that is the most likely reason you will lie awake, and it will feel like the bedtime is wrong when the transition is what is missing. <b>Doing this on a walk manufactures the buffer.</b> You get the language hour and the decompression in the same 25 minutes instead of trading one for the other.</p>
+    </div>
+  </header>
+
+  <!-- THE SPLIT -->
+  <section>
+    <div class="sec-head">
+      <span class="num">01 — THE RULE THAT PROTECTS BEDTIME</span>
+      <h2>Speak for 45, then only listen</h2>
+      <p class="note">Producing language out loud is mildly arousing: vocal effort, breathing changes. Fine at 18:45. Not fine at 19:25.</p>
+    </div>
+
+    <div class="split">
+      <div>
+        <span class="t">18:30 → 19:15</span>
+        <span class="h">Shadow and repeat</span>
+        <span class="w">Out loud, walking. Full output. This is where the actual work happens.</span>
+      </div>
+      <div class="quiet">
+        <span class="t">19:15 → 19:30</span>
+        <span class="h">Input only</span>
+        <span class="w">Listening, nothing spoken. Dim light from here on.</span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="box warn">
+        <h3>The one thing that never goes in this hour</h3>
+        <p><b>The pitch roleplay.</b> Performing under pressure is genuinely sympathetic-activating, which is the entire point of the exercise. It cannot live at 19:30.</p>
+        <p>It goes in a <b>weekend morning block</b>, where you can go hard without paying for it at bedtime.</p>
+      </div>
+      <div class="box warn">
+        <h3>May to August: wear sunglasses</h3>
+        <p>Sunset in Rome is close to <b>20:50</b> in late June, so at 19:00 you are walking in full daylight.</p>
+        <p>Bright evening light is a <b>phase delay signal</b>. Without sunglasses this walk quietly undoes what the morning lamp did, every night, for four months.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEK -->
+  <section>
+    <div class="sec-head">
+      <span class="num">02 — THE WEEK</span>
+      <h2>Alternating, not daily</h2>
+      <p class="note">Thirty minute weekday fragments do not build a language. A full hour, alternating, does more with the same total. <b>English 4h, Chinese 3h.</b></p>
+    </div>
+
+    <div class="week">
+      <div class="en"><span class="d">Mon</span><span class="s">English</span><span class="x">Shadowing</span></div>
+      <div class="zh"><span class="d">Tue</span><span class="s">Chinese</span><span class="x">Tone pairs</span></div>
+      <div class="en"><span class="d">Wed</span><span class="s">English</span><span class="x">Reading aloud</span></div>
+      <div class="zh"><span class="d">Thu</span><span class="s">Chinese</span><span class="x">Tone pairs</span></div>
+      <div class="en"><span class="d">Fri</span><span class="s">English</span><span class="x">Shadowing</span></div>
+      <div class="zh"><span class="d">Sat</span><span class="s">Chinese</span><span class="x">Graded input</span></div>
+      <div class="plan"><span class="d">Sun</span><span class="s">Planning</span><span class="x">Not a language day</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="box">
+        <h3>The fourth English hour</h3>
+        <p>Three evenings gets you to 3h. The fourth is a <b>weekend morning block</b>, and it is also where the pitch roleplay and the monthly recording live, because both are too activating for the evening.</p>
+      </div>
+      <div class="box">
+        <h3>An hour you got back for free</h3>
+        <p>Wednesday used to be a cooking evening, which ate this slot every week. <b>Enit cooking means all six evenings are clean.</b></p>
+        <p>Hiring a cook bought back roughly <b>50 hours of language a year</b>. That is more than it looks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGLISH -->
+  <section>
+    <div class="sec-head">
+      <span class="num">03 — ENGLISH <span class="tag t-en">10 → 100</span></span>
+      <h2>Shadowing works from day one</h2>
+      <p class="note">Because you already have the language. Shadowing maps sound you can already parse onto your own motor output, and that mapping is exactly what is missing at 10 out of 100. This is not true of Chinese, which is the section after this one.</p>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Mode</th><th>Share</th><th>What it is</th><th>The one rule</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">Shadowing</td><td class="n">60%</td>
+            <td>Play a native-speaker interview and repeat a beat behind, out loud, matching rhythm and stress rather than meaning.</td>
+            <td><b>Pick people you want to sound like.</b> The cadence you copy is the one you get.</td>
+          </tr>
+          <tr>
+            <td class="name">Reading aloud</td><td class="n">25%</td>
+            <td>Read a paragraph out loud, then reread it fixing one specific thing: a vowel, a linking, a stress pattern.</td>
+            <td><b>One target per session.</b> Fixing everything at once fixes nothing.</td>
+          </tr>
+          <tr>
+            <td class="name">Free output</td><td class="n">15%</td>
+            <td>Explain something you already know, unscripted, as if mid-conversation.</td>
+            <td><b>Do not stop to correct yourself.</b> Fluency and accuracy are trained separately.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <h3>The monthly recording, and why the topic never changes</h3>
+      <p>Record a spoken pitch on <b>the same topic every month</b>, unscripted, same length. Weekend morning, not the evening.</p>
+      <p>Controlling the topic is what makes the improvement visible: it removes the only variable that could explain the difference away. <b>Twelve recordings a year and you cannot argue with them.</b> Fix the topic once, now, and never change it, or the benchmark is worthless.</p>
+    </div>
+  </section>
+
+  <!-- CHINESE -->
+  <section>
+    <div class="sec-head">
+      <span class="num">04 — CHINESE <span class="tag t-zh">0 → 1</span></span>
+      <h2>Do not shadow. Not yet.</h2>
+      <p class="note">This is the single most important line on the page, and it contradicts what you planned to do.</p>
+    </div>
+
+    <div class="box warn">
+      <h3>Why shadowing produces nothing at zero</h3>
+      <p>Shadowing works by mapping sound <b>you already partly parse</b> onto your own motor output. With no tonal system in place, native-speed Mandarin is <b>undifferentiated noise</b>. You would be copying something you cannot yet hear, which trains nothing and feels like progress, which is worse than doing nothing.</p>
+      <p>English shadowing works from day one because you already have the language. Chinese does not get the same treatment for another three months.</p>
+    </div>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-when">Months<br>1–3</div>
+        <div class="phase-body">
+          <h3>Tone pairs, cold</h3>
+          <p><b>The twenty two-syllable combinations:</b> four tones against four tones, plus the four with a neutral syllable. Drilled until they are automatic.</p>
+          <p><b>Why this is the whole game.</b> Get tones wrong early and you spend years being not-quite-understood. It is the one beginner mistake that is genuinely expensive to fix later, because by then it is a motor habit and not a knowledge gap. Undoing a motor habit costs an order of magnitude more than building the right one.</p>
+          <p><b>Method:</b> listen to a minimal pair, say it, record it, compare. Short daily reps beat long weekly ones. Alongside this, <b>graded comprehensible input</b>: material built for beginners, not native material played slowly.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-when">Month 4<br>onward</div>
+        <div class="phase-body">
+          <h3>Native material starts paying</h3>
+          <p>Once the tone system is in place, everything you could not use before becomes usable. <b>This is the gate, and it is worth waiting for rather than jumping.</b> The three months are not a delay, they are what makes the next two years work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUT + WIND DOWN -->
+  <section>
+    <div class="sec-head">
+      <span class="num">05 — WHAT IS NOT HERE</span>
+      <h2>Cut, and what happens after 19:30</h2>
+    </div>
+    <div class="grid2">
+      <div class="box">
+        <h3>Spanish, cut entirely</h3>
+        <p>It was the explicit <b>"might as well"</b>, which is exactly what makes it the cheapest thing to lose when the hours do not close. And given Italian, it stays nearly free to pick up later, so postponing it costs almost nothing.</p>
+        <p><b>Revisit once Chinese clears the tone-pair phase</b>, not before.</p>
+      </div>
+      <div class="box calm">
+        <h3>19:30 → 20:00 · wind down</h3>
+        <p>Reading, meditation, or nothing. <b>Meditation and boredom need no slot of their own.</b> They live here and on the walks.</p>
+        <p>The <b>12:30 walk is the boredom quota</b>, already paid. Do not podcast it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIND BENCHMARKS -->
+  <section>
+    <div class="sec-head">
+      <span class="num">06 — MIND BENCHMARKS</span>
+      <h2>Fixed protocol, one number</h2>
+      <p class="note">Same design rule as the body ones: anything that needs a judgment call to score will not survive three months. <b>Baseline these on 5 and 6 September</b>, before the schedule has done anything to you.</p>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Test</th><th>Protocol</th><th>Score</th><th>Why it works</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">The Recall</td>
+            <td>Immediately after listening to something, write a <b>sealed</b> checklist of the 10 points that mattered. The next day, summarise from memory and score against the sealed list.</td>
+            <td class="n">/10</td>
+            <td>The seal is the mechanism. You are graded against what you thought mattered <b>before you knew you would be tested</b>. Without it you unconsciously grade yourself against whatever you happened to remember.</td>
+          </tr>
+          <tr>
+            <td class="name">Boredom Sit</td>
+            <td>Sit doing nothing. No phone, no music, no plan. Stop the clock at the first urge you act on.</td>
+            <td class="n">minutes</td>
+            <td>It turns "be bored daily" into an integer, and it is the closest thing you have to a direct read on whether attention is <b>recovering or just being rearranged</b>. Most people do not clear four minutes cold.</td>
+          </tr>
+          <tr>
+            <td class="name">English pitch</td>
+            <td>Monthly recorded pitch, same topic every time, unscripted.</td>
+            <td class="n">the tape</td>
+            <td>Twelve a year, and the comparison is the score.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Three things still open, and all three block the first week.</b> No graded Chinese input source chosen. No shortlist of English interviews chosen. No fixed topic for the monthly pitch, which has to be set once and never changed.</p>
+    <p>Pick all three before Monday. Each one is a fifteen minute decision that otherwise turns into a missed session on the first evening.</p>
+    <p style="color:var(--ink-3); font-size:13.5px;">Derived from <code>study.json</code>. If a number here disagrees with that file, the file wins.</p>
+  </footer>
+
+</div>
+</body>
+</html>

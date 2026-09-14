@@ -1,0 +1,716 @@
+<title>Mise en Place 2 Settembre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600;700&display=swap">
+
+<style>
+  :root {
+    --paper:      #EDEFEA;
+    --card:       #F6F7F3;
+    --ink:        #171C18;
+    --ink-2:      #556056;
+    --ink-3:      #808B81;
+    --rule:       #CBD1C7;
+    --rule-soft:  #DDE1D9;
+    --accent:     #A8332A;
+    --accent-bg:  #EBDCD8;
+    --leaf:       #4B6B3C;
+    --leaf-bg:    #DEE6D6;
+    --warn-bg:    #EFE7D4;
+    --warn-ink:   #6B5518;
+    --tape:       #E3D9B8;
+    --tape-ink:   #2B2415;
+    --cold:       #3C5A6B;
+    --cold-bg:    #D8E2E8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:     #131714;
+      --card:      #1A201B;
+      --ink:       #E9EDE7;
+      --ink-2:     #9BA69A;
+      --ink-3:     #6E7A6E;
+      --rule:      #2E362F;
+      --rule-soft: #242B25;
+      --accent:    #E4705F;
+      --accent-bg: #33211E;
+      --leaf:      #94B47B;
+      --leaf-bg:   #202A1D;
+      --warn-bg:   #2B2617;
+      --warn-ink:  #D2BC7C;
+      --tape:      #4A4128;
+      --tape-ink:  #EFE3C2;
+      --cold:      #8FB6C9;
+      --cold-bg:   #1B262C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:     #131714;
+    --card:      #1A201B;
+    --ink:       #E9EDE7;
+    --ink-2:     #9BA69A;
+    --ink-3:     #6E7A6E;
+    --rule:      #2E362F;
+    --rule-soft: #242B25;
+    --accent:    #E4705F;
+    --accent-bg: #33211E;
+    --leaf:      #94B47B;
+    --leaf-bg:   #202A1D;
+    --warn-bg:   #2B2617;
+    --warn-ink:  #D2BC7C;
+    --tape:      #4A4128;
+    --tape-ink:  #EFE3C2;
+    --cold:      #8FB6C9;
+    --cold-bg:   #1B262C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Literata", Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  h1, h2, h3, h4 {
+    font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    text-wrap: balance; margin: 0; line-height: 1.1;
+  }
+  h1 { font-weight: 800; font-size: clamp(34px, 6.5vw, 52px); letter-spacing: -.02em; }
+  h2 { font-weight: 800; font-size: 24px; letter-spacing: -.01em; }
+  h3 { font-weight: 700; font-size: 17px; letter-spacing: -.005em; }
+  p  { margin: 0; }
+
+  header { display: flex; flex-direction: column; gap: 18px; }
+  .title-rule { height: 3px; background: var(--ink); width: 68px; }
+  .standfirst { font-size: 18px; color: var(--ink-2); max-width: 60ch; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  /* pipeline strip */
+  .pipe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 4px; }
+  .pipe > div { background: var(--card); padding: 15px 16px; display: flex; flex-direction: column; gap: 5px; }
+  .pipe .n { font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  .pipe .t { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 17px; }
+  .pipe .s { font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
+  @media (max-width: 660px) { .pipe { grid-template-columns: 1fr; } }
+
+  section { display: flex; flex-direction: column; gap: 22px; }
+  .sec-head { display: flex; flex-direction: column; gap: 8px; border-top: 2px solid var(--ink); padding-top: 14px; }
+  .sec-head .num { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: .14em; color: var(--accent); }
+  .sec-head .note { font-size: 15px; color: var(--ink-2); max-width: 64ch; }
+  .sec-head .note b { color: var(--ink); font-weight: 600; }
+
+  .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; }
+  @media (max-width: 700px) { .shop { grid-template-columns: 1fr; } }
+  .shop-group { display: flex; flex-direction: column; gap: 8px; }
+  .shop-group h3 { padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+  .shop-group ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .shop-group li {
+    display: grid; grid-template-columns: 20px 1fr auto;
+    align-items: baseline; gap: 10px; padding: 7px 0;
+    border-bottom: 1px solid var(--rule-soft); font-size: 15px;
+  }
+  .shop-group li input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; align-self: center; }
+  .qty { font-family: "JetBrains Mono", monospace; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink-2); white-space: nowrap; }
+  .sub { display: block; font-size: 13px; color: var(--ink-3); line-height: 1.35; }
+
+  .steps { display: flex; flex-direction: column; }
+  .step { display: grid; grid-template-columns: 42px 1fr; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--rule-soft); }
+  .step:first-child { border-top: 1px solid var(--rule-soft); }
+  .step-n { font-family: "JetBrains Mono", monospace; font-size: 13px; font-weight: 600; color: var(--accent); padding-top: 2px; }
+  .step-body { display: flex; flex-direction: column; gap: 6px; }
+  .step-body h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+  .step-body p { font-size: 15px; color: var(--ink-2); max-width: 68ch; }
+  .step-body p b { color: var(--ink); font-weight: 600; }
+  .tag { font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; padding: 3px 7px; border-radius: 2px; }
+  .tag-oven { background: var(--accent-bg); color: var(--accent); }
+  .tag-leaf { background: var(--leaf-bg); color: var(--leaf); }
+  .tag-cold { background: var(--cold-bg); color: var(--cold); }
+
+  /* tables */
+  .tw { overflow-x: auto; border: 1px solid var(--rule); background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14.5px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  thead th {
+    font-family: "JetBrains Mono", monospace; font-size: 10.5px; font-weight: 600;
+    letter-spacing: .11em; text-transform: uppercase; color: var(--ink-3);
+    border-bottom: 1px solid var(--rule); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.n { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 13.5px; white-space: nowrap; }
+  td.name { font-weight: 600; }
+  .no { color: var(--accent); font-family: "JetBrains Mono", monospace; font-size: 13px; font-weight: 600; }
+
+  /* label mock */
+  .label-row { display: grid; grid-template-columns: minmax(240px, 320px) 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 700px) { .label-row { grid-template-columns: 1fr; } }
+  .tape {
+    background: var(--tape); color: var(--tape-ink);
+    font-family: "JetBrains Mono", monospace;
+    padding: 18px 20px; line-height: 1.7;
+    transform: rotate(-1.1deg);
+    box-shadow: 0 1px 0 rgba(0,0,0,.12);
+  }
+  .tape .l1 { font-size: 16px; font-weight: 700; letter-spacing: .04em; }
+  .tape .l2 { font-size: 14px; }
+  .tape .l3 { font-size: 14px; font-weight: 700; }
+  .tape .l4 { font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .label-key { display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; color: var(--ink-2); }
+  .label-key div { display: grid; grid-template-columns: 78px 1fr; gap: 12px; }
+  .label-key span:first-child { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); padding-top: 3px; }
+  .label-key b { color: var(--ink); font-weight: 600; }
+
+  .days { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 820px) { .days { grid-template-columns: 1fr; } }
+  .day { background: var(--card); border: 1px solid var(--rule); display: flex; flex-direction: column; }
+  .day-head { padding: 14px 16px 12px; border-bottom: 2px solid var(--ink); display: flex; flex-direction: column; gap: 3px; }
+  .day-head .dow { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 19px; }
+  .day-head .dt { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .slot { padding: 13px 16px; border-bottom: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 5px; }
+  .slot:last-child { border-bottom: 0; }
+  .slot-h { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .slot-t { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .slot-l { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .slot ul { list-style: none; margin: 0; padding: 0; font-size: 14px; line-height: 1.5; }
+  .slot ul li { padding: 1px 0; }
+  .slot ul li .g { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .day-foot { margin-top: auto; padding: 11px 16px; background: var(--leaf-bg); font-family: "JetBrains Mono", monospace; font-size: 11.5px; color: var(--leaf); display: flex; justify-content: space-between; gap: 8px; }
+
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .rules { grid-template-columns: 1fr; } }
+  .box { border: 1px solid var(--rule); padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; background: var(--card); }
+  .box.warn { background: var(--warn-bg); border-color: transparent; }
+  .box.warn h3, .box.warn li { color: var(--warn-ink); }
+  .box ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; font-size: 14.5px; line-height: 1.5; }
+  .box ul li { padding-left: 18px; position: relative; }
+  .box ul li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 1.5px; background: currentColor; opacity: .55; }
+
+  footer { border-top: 2px solid var(--ink); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: var(--ink-2); }
+  footer b { color: var(--ink); font-weight: 600; }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .sheet { padding: 0; gap: 32px; max-width: none; }
+    .day, .box, .pipe > div, .step, .tw { break-inside: avoid; }
+    .tape { transform: none; }
+  }
+</style>
+
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">Sessione 1 · due cotture a settimana · per Enit</p>
+    <h1>Mise en Place<br>2 Settembre</h1>
+    <div class="title-rule"></div>
+    <p class="standfirst">Una sola cottura, <strong>mercoledì 2 settembre</strong>, copre i pasti di mercoledì, giovedì e venerdì. Circa 90 minuti in cucina, più 15 di etichettatura. Prossima cottura sabato 5.</p>
+
+    <div class="pipe">
+      <div>
+        <span class="n">Fase 1</span>
+        <span class="t">Spesa</span>
+        <span class="s">Le quantità in lista sono <b>minimi</b>. Compra le confezioni intere che trovi, non serve arrivare al grammo.</span>
+      </div>
+      <div>
+        <span class="n">Fase 2</span>
+        <span class="t">Cucina</span>
+        <span class="s">Cuoci <b>tutto</b> quello che hai comprato. Poi pesa il cotto e dividi in porzioni fisse.</span>
+      </div>
+      <div>
+        <span class="n">Fase 3</span>
+        <span class="t">Archivio</span>
+        <span class="s">Ogni contenitore ha un'etichetta di <b>quattro righe</b>, lotto incluso. Quello che avanza diventa scorta, non spazzatura.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ 01 SPESA ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="num">01 — FASE 1</span>
+      <h2>La spesa</h2>
+      <p class="note">Ordinata per reparto, pesi <b>a crudo</b>. Sono quantità minime: se il pollo viene in vaschette da 500 g, prendi 500 g e cuocili tutti. L'eccedenza non è uno spreco, diventa la scorta in freezer.</p>
+    </div>
+
+    <div class="shop">
+
+      <div class="shop-group">
+        <h3>Banco carne</h3>
+        <ul>
+          <li><input type="checkbox"><span>Macinato di manzo magro, max 5% grassi<span class="sub">450 g polpette · 200 g beef bowl</span></span><span class="qty">≥ 700 g</span></li>
+          <li><input type="checkbox"><span>Sovracosce di pollo disossate, senza pelle</span><span class="qty">≥ 350 g</span></li>
+        </ul>
+      </div>
+
+      <div class="shop-group">
+        <h3>Uova e latticini</h3>
+        <ul>
+          <li><input type="checkbox"><span>Uova medie</span><span class="qty">12</span></li>
+          <li><input type="checkbox"><span>Fiocchi di latte (cottage cheese)</span><span class="qty">400 g</span></li>
+          <li><input type="checkbox"><span>Yogurt greco colato 0% o skyr<span class="sub">vaschetta grande, vedi la regola dell'etichetta più sotto</span></span><span class="qty">1 kg</span></li>
+          <li><input type="checkbox"><span>Feta</span><span class="qty">100 g</span></li>
+          <li><input type="checkbox"><span>Parmigiano da grattugiare</span><span class="qty">100 g</span></li>
+          <li><input type="checkbox"><span>Latte intero</span><span class="qty">1 L</span></li>
+        </ul>
+      </div>
+
+      <div class="shop-group">
+        <h3>Ortofrutta · verdure</h3>
+        <ul>
+          <li><input type="checkbox"><span>Patate a pasta gialla</span><span class="qty">≥ 550 g</span></li>
+          <li><input type="checkbox"><span>Patata dolce</span><span class="qty">≥ 500 g</span></li>
+          <li><input type="checkbox"><span>Fagiolini</span><span class="qty">250 g</span></li>
+          <li><input type="checkbox"><span>Zucchine</span><span class="qty">250 g</span></li>
+          <li><input type="checkbox"><span>Broccoli</span><span class="qty">300 g</span></li>
+          <li><input type="checkbox"><span>Bietola<span class="sub">foglia del giorno 1</span></span><span class="qty">1 mazzo</span></li>
+          <li><input type="checkbox"><span>Spinacino in busta<span class="sub">foglia del giorno 2, si mangia crudo</span></span><span class="qty">200 g</span></li>
+          <li><input type="checkbox"><span>Cavolo nero<span class="sub">foglia del giorno 3</span></span><span class="qty">1 mazzo</span></li>
+          <li><input type="checkbox"><span>Pomodorini</span><span class="qty">250 g</span></li>
+          <li><input type="checkbox"><span>Peperone rosso</span><span class="qty">1</span></li>
+          <li><input type="checkbox"><span>Cipolle dorate</span><span class="qty">2</span></li>
+          <li><input type="checkbox"><span>Aglio</span><span class="qty">1 testa</span></li>
+          <li><input type="checkbox"><span>Prezzemolo e basilico</span><span class="qty">1 mazzo</span></li>
+        </ul>
+      </div>
+
+      <div class="shop-group">
+        <h3>Ortofrutta · frutta</h3>
+        <ul>
+          <li><input type="checkbox"><span>Melone<span class="sub">per la macedonia, due porzioni</span></span><span class="qty">½</span></li>
+          <li><input type="checkbox"><span>Uva bianca</span><span class="qty">200 g</span></li>
+          <li><input type="checkbox"><span>Mele<span class="sub">una nella macedonia, una intera per il giorno 3</span></span><span class="qty">2</span></li>
+          <li><input type="checkbox"><span>Arance</span><span class="qty">2</span></li>
+          <li><input type="checkbox"><span>Mirtilli</span><span class="qty">2 × 125 g</span></li>
+          <li><input type="checkbox"><span>Banane<span class="sub">solo per gli shake, mai nella macedonia</span></span><span class="qty">3</span></li>
+          <li><input type="checkbox"><span>Avocado<span class="sub">uno maturo, uno più duro</span></span><span class="qty">2</span></li>
+          <li><input type="checkbox"><span>Limoni</span><span class="qty">2</span></li>
+        </ul>
+      </div>
+
+      <div class="shop-group">
+        <h3>Dispensa</h3>
+        <ul>
+          <li><input type="checkbox"><span>Pane a lievitazione naturale<span class="sub">servono 7 fette</span></span><span class="qty">1 pagnotta</span></li>
+          <li><input type="checkbox"><span>Pomodori pelati<span class="sub">400 g sugo polpette · 400 g sugo shakshuka</span></span><span class="qty">2 × 400 g</span></li>
+          <li><input type="checkbox"><span>Pasta corta secca</span><span class="qty">1 pacco</span></li>
+          <li><input type="checkbox"><span>Fiocchi d'avena</span><span class="qty">500 g</span></li>
+          <li><input type="checkbox"><span>Noci sgusciate · mandorle</span><span class="qty">100 g + 100 g</span></li>
+          <li><input type="checkbox"><span>Pangrattato</span><span class="qty">100 g</span></li>
+          <li><input type="checkbox"><span>Miele</span><span class="qty">1 vasetto</span></li>
+          <li><input type="checkbox"><span>Olio extravergine d'oliva</span><span class="qty">1 bottiglia</span></li>
+          <li><input type="checkbox"><span>Sale <b>iodato</b><span class="sub">il sale italiano di default non lo è</span></span><span class="qty">1</span></li>
+          <li><input type="checkbox"><span>Paprika affumicata, cumino, origano, pepe</span><span class="qty">—</span></li>
+        </ul>
+      </div>
+
+      <div class="shop-group">
+        <h3>Materiale d'archivio</h3>
+        <ul>
+          <li><input type="checkbox"><span>Sacchetti per sottovuoto</span><span class="qty">1 rotolo</span></li>
+          <li><input type="checkbox"><span>Contenitori di plastica con coperchio<span class="sub">per verdure, patate, foglie</span></span><span class="qty">8</span></li>
+          <li><input type="checkbox"><span>Contenitore di vetro ermetico<span class="sub">solo macedonia, il vetro non trattiene odori</span></span><span class="qty">1 grande</span></li>
+          <li><input type="checkbox"><span>Vasetti di vetro con tappo<span class="sub">per i sughi, l'alluminio col pomodoro non va</span></span><span class="qty">2</span></li>
+          <li><input type="checkbox"><span>Scotch di carta</span><span class="qty">1 rotolo</span></li>
+          <li><input type="checkbox"><span>Pennarello indelebile nero</span><span class="qty">1</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 02 CUCINA ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="num">02 — FASE 2 · CIRCA 90 MINUTI</span>
+      <h2>L'ordine conta</h2>
+      <p class="note">Il forno lavora da solo mentre si fa il resto: parti dai passaggi <b>forno</b>, poi riempi l'attesa con i fornelli. In questo ordine si finisce in un'ora e mezza, in ordine sparso ce ne vogliono due e mezza.</p>
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-n">01</div>
+        <div class="step-body">
+          <h3>Accendi il forno <span class="tag tag-oven">forno</span></h3>
+          <p>200 °C ventilato. Fallo per primo, si scalda mentre tagli.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">02</div>
+        <div class="step-body">
+          <h3>Patate e patata dolce, teglie separate <span class="tag tag-oven">forno · 40 min</span></h3>
+          <p>Tutte le patate e tutta la patata dolce che hai comprato, a cubi da 2 cm, su due teglie diverse. Un cucchiaino d'olio e sale su ciascuna, niente di più. Quaranta minuti, girale a metà. Devono restare sode e non sfaldarsi, perché poi vanno in frigo e riscaldate.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">03</div>
+        <div class="step-body">
+          <h3>Il sugo delle polpette</h3>
+          <p>Mezza cipolla tritata in casseruola con un cucchiaio d'olio, tre minuti. Aggiungi <b>400 g di pelati</b> schiacciati con la forchetta, sale, basilico. Sobbolle scoperto venti minuti mentre prepari l'impasto.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">04</div>
+        <div class="step-body">
+          <h3>Le polpette</h3>
+          <p>Per ogni <b>450 g di macinato</b>: <b>60 g di pangrattato</b>, <b>1 uovo</b>, <b>40 g di parmigiano</b>, uno spicchio d'aglio tritato fine, prezzemolo, sale e pepe. Polpette da circa 40 g. Rosolale in padella quattro minuti girandole, poi nel sugo altri quindici.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">05</div>
+        <div class="step-body">
+          <h3>Il pollo <span class="tag tag-oven">forno · ultimi 25 min</span></h3>
+          <p>Tutte le sovracosce in una teglia, sale, pepe, origano, un cucchiaino d'olio. Infornale con le patate per gli ultimi venticinque minuti. Poi affettale a <b>strisce spesse</b>, non a cubetti: si seccano meno quando le riscalda.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">06</div>
+        <div class="step-body">
+          <h3>Il macinato del beef bowl</h3>
+          <p>Il macinato rimasto, in padella antiaderente <b>senza olio</b>, sgranato bene, otto minuti. Solo sale e un cucchiaino di paprika affumicata. Contenitore a parte, niente sugo e niente altro condimento: il resto lo aggiunge lui nel piatto.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">07</div>
+        <div class="step-body">
+          <h3>Il sugo per la shakshuka</h3>
+          <p>Mezza cipolla, <b>un peperone rosso</b> a dadini e uno spicchio d'aglio in padella, sei minuti. Aggiungi <b>400 g di pelati</b>, un cucchiaino di cumino, uno di paprika affumicata, sale. Quindici minuti finché non è <b>denso</b>: deve reggere l'uovo senza allargarsi. In un vasetto di vetro, <b>senza uova</b>, le rompe lui dentro la mattina.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">08</div>
+        <div class="step-body">
+          <h3>Le verdure, ognuna nel suo contenitore</h3>
+          <p>Fagiolini e broccoli a vapore, sei-otto minuti, devono restare sodi e verdi. Zucchine a rondelle in padella, sei minuti. Tre contenitori separati, niente condimento.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">09</div>
+        <div class="step-body">
+          <h3>Le foglie verdi <span class="tag tag-leaf">mai lessate</span></h3>
+          <p>Lavale e <b>asciugale bene</b>, l'acqua le fa marcire in frigo. Lo <b>spinacino</b> resta crudo, in busta con un foglio di carta assorbente dentro. <b>Bietola</b> e <b>cavolo nero</b>: togli la costa dura e falle appassire sessanta secondi in padella con un filo d'olio. Mai lessate e scolate, l'acqua di cottura si porta via i folati.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">10</div>
+        <div class="step-body">
+          <h3>La macedonia, due porzioni <span class="tag tag-cold">vetro</span></h3>
+          <p>Circa <b>400 g</b> in tutto: melone, uva, una mela, un'arancia, mirtilli, a cubi regolari. Contenitore di vetro ermetico, e sopra il succo di mezzo limone, che rallenta l'ossidazione. Basta per due giorni, il terzo giorno lui mangia un frutto intero. <b>Fuori banana, pera, kiwi e lamponi</b>: il kiwi ha un enzima che liquefa tutto quello che gli sta intorno.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">11</div>
+        <div class="step-body">
+          <h3>Pesa e dividi <span class="tag tag-oven">il passaggio che tiene tutto</span></h3>
+          <p>Questa è la parte che rende il sistema indipendente da quanto hai comprato. <b>Pesa ogni componente da cotto</b>, dividi per la porzione indicata nella tabella qui sotto, e fai tanti contenitori quante porzioni intere vengono fuori. <b>L'avanzo non si butta e non si aggiunge alle porzioni</b>: va in un contenitore suo, etichettato <b>AVANZO</b>, e in freezer.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Componente</th><th>Una porzione</th><th>Contenitore</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Pollo arrosto a strisce</td><td class="n">200 g</td><td>Sottovuoto</td></tr>
+          <tr><td class="name">Macinato di manzo cotto</td><td class="n">150 g</td><td>Sottovuoto</td></tr>
+          <tr><td class="name">Polpette con poco sugo</td><td class="n">250 g</td><td>Contenitore di plastica</td></tr>
+          <tr><td class="name">Patate al forno</td><td class="n">450 g</td><td>Plastica, coperchio non ermetico</td></tr>
+          <tr><td class="name">Patata dolce al forno</td><td class="n">400 g</td><td>Plastica, coperchio non ermetico</td></tr>
+          <tr><td class="name">Verdura a vapore o in padella</td><td class="n">200 g</td><td>Contenitore di plastica</td></tr>
+          <tr><td class="name">Foglia appassita</td><td class="n">100 g</td><td>Contenitore piccolo</td></tr>
+          <tr><td class="name">Sugo shakshuka</td><td class="n">250 g</td><td>Vasetto di vetro</td></tr>
+          <tr><td class="name">Macedonia</td><td class="n">200 g</td><td>Vetro ermetico</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 03 ARCHIVIO ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="num">03 — FASE 3</span>
+      <h2>L'archivio</h2>
+      <p class="note">Scotch di carta e pennarello, su <b>ogni</b> contenitore, sempre le stesse tre righe nello stesso ordine. Il pezzo che conta è la terza: <b>si scrive la data entro cui mangiarlo</b>, già calcolata. Nessuno deve fare conti aprendo il frigo alle sei del mattino.</p>
+    </div>
+
+    <div class="label-row">
+      <div class="tape">
+        <div class="l1">POLLO ARROSTO</div>
+        <div class="l2">200 g · porz. 1 di 2</div>
+        <div class="l3">02/09 → 06/09</div>
+        <div class="l4">FRIGO</div>
+      </div>
+      <div class="label-key">
+        <div><span>Riga 1</span><span><b>Cosa c'è dentro</b>, in stampatello. Il nome che usa la scheda, non un sinonimo.</span></div>
+        <div><span>Riga 2</span><span><b>Peso della porzione</b> e quale porzione è sul totale. Così lui sa cosa sta mangiando anche se il pollo quel giorno era 180 g e non 200.</span></div>
+        <div><span>Riga 3</span><span><b>Data di cottura → data entro cui mangiarlo.</b> La seconda la calcoli tu dalla tabella qui sotto e la scrivi già fatta.</span></div>
+        <div><span>Riga 4</span><span><b>FRIGO</b> o <b>FREEZER</b>. Serve quando un contenitore si sposta.</span></div>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Cosa</th><th>In frigo</th><th>In freezer</th><th>Come</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Pollo cotto</td><td class="n">4 giorni</td><td class="n">3 mesi</td><td>Sottovuoto, disteso piatto</td></tr>
+          <tr><td class="name">Macinato cotto</td><td class="n">4 giorni</td><td class="n">3 mesi</td><td>Sottovuoto, disteso piatto</td></tr>
+          <tr><td class="name">Polpette al sugo</td><td class="n">4 giorni</td><td class="n">3 mesi</td><td>Contenitore, sugo che copre</td></tr>
+          <tr><td class="name">Sugo di pomodoro</td><td class="n">4 giorni</td><td class="n">3 mesi</td><td>Vetro. Mai alluminio</td></tr>
+          <tr><td class="name">Patate e patata dolce</td><td class="n">3 giorni</td><td class="no">mai</td><td>Congelate diventano granulose</td></tr>
+          <tr><td class="name">Verdura cotta</td><td class="n">3 giorni</td><td class="no">no</td><td>Scongelata viene molle</td></tr>
+          <tr><td class="name">Foglie appassite</td><td class="n">2 giorni</td><td class="no">no</td><td>Contenitore piccolo</td></tr>
+          <tr><td class="name">Spinacino crudo</td><td class="n">4 giorni</td><td class="no">no</td><td>Busta + carta assorbente dentro</td></tr>
+          <tr><td class="name">Macedonia</td><td class="n">3 giorni</td><td class="no">no</td><td>Vetro ermetico + succo di limone</td></tr>
+          <tr><td class="name">Riso cotto</td><td class="n">24 ore</td><td class="n">1 mese</td><td>Raffreddare in un'ora, poi congelare subito</td></tr>
+          <tr><td class="name">Yogurt, vaschetta aperta</td><td class="n">5 giorni</td><td class="no">no</td><td>Data di apertura sul coperchio</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rules">
+      <div class="box">
+        <h3>Il sottovuoto, dove serve davvero</h3>
+        <ul>
+          <li><b>In freezer è un guadagno vero.</b> Niente bruciature da gelo, e si passa da uno-due mesi a tre-sei.</li>
+          <li><b>In frigo non allunga i tempi.</b> Sigillare toglie l'ossigeno, e senza ossigeno crescono batteri diversi, non zero batteri. Restano quattro giorni, poi il contenitore va spostato in freezer o buttato.</li>
+          <li><b>Usalo per le cose asciutte</b>: pollo a strisce, macinato sgranato, polpette scolate del sugo in eccesso.</li>
+          <li><b>Non usarlo sui liquidi.</b> Il sugo viene risucchiato nella macchina. Se un sugo deve andare sottovuoto, prima congelalo nel contenitore, poi sigilla il blocco già duro.</li>
+          <li><b>Disteso piatto</b>, mai a mattonella. Si scongela in metà tempo e si impila.</li>
+        </ul>
+      </div>
+
+      <div class="box warn">
+        <h3>Cosa non fare</h3>
+        <ul>
+          <li><b>Niente alluminio con il pomodoro.</b> L'acido buca il foglio e lascia sapore metallico. Sughi solo in vetro o plastica.</li>
+          <li><b>Non scrivere solo la data di cottura.</b> Da sola obbliga a fare un conto, e il conto non si fa mai. Scrivi la scadenza già calcolata.</li>
+          <li><b>Non congelare patate</b>, né normali né dolci.</li>
+          <li><b>Non lasciare niente fuori più di un'ora</b> dopo la cottura, poi in frigo col coperchio.</li>
+          <li><b>Non cuocere la pasta in anticipo.</b> Riscaldata è pessima e sarebbe il primo pasto che salta. La butta lui alle 16:25, cinque minuti.</li>
+          <li><b>Non condire il macinato del beef bowl</b> e non mettere le uova nel sugo della shakshuka. Sono basi, si finiscono al momento.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Le scorte, e perche' non si toccano</h3>
+      <p style="font-size:14.5px; color:var(--ink-2); max-width:68ch;">Oltre ai pasti dei tre giorni si produce <b>di piu' del necessario</b>, e l'eccedenza va in freezer come scorta. Serve ad assorbire gli imprevisti: una cottura che salta, una giornata storta, un cambio di programma. La regola che la tiene in vita e' una sola: <b>le scorte non entrano nella rotazione ordinaria.</b> Se si mangiano a rotazione non sono scorte, sono il menu, e al primo imprevisto non c'e' piu' niente.</p>
+      <div class="tw" style="margin-top:4px;">
+        <table>
+          <thead><tr><th>Voce</th><th>Obiettivo</th><th>Si riproduce a</th><th>Dove</th><th>Quando</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Burrito manzo e patate</td><td class="n">10</td><td class="n">4 rimasti</td><td>Freezer, sottovuoto singolo, 90 giorni</td><td class="n">dal 5 settembre</td></tr>
+            <tr><td class="name">Polpette al sugo</td><td class="n">6 porzioni</td><td class="n">2 rimaste</td><td>Freezer, contenitore, 90 giorni</td><td class="n">dal 5 settembre</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 GIORNI ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="num">04 — COME SI MANGIA</span>
+      <h2>I tre giorni</h2>
+      <p class="note">Porzioni tarate su <b>80 kg</b>, grammi <b>a cotto</b>. La frutta segue una regola sua: <b>macedonia il giorno della cottura e quello dopo, frutto intero il terzo giorno</b>, perché la frutta tagliata dal terzo giorno in poi perde vitamina C e fa acqua.</p>
+    </div>
+
+    <div class="days">
+
+      <div class="day">
+        <div class="day-head">
+          <span class="dow">Mercoledì</span>
+          <span class="dt">2 settembre · giorno di cottura</span>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">05:45</span><span class="slot-l">Pre-training</span></div>
+          <ul><li>Caffè nero · poi liberi fino alle 10:00</li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">09:30</span><span class="slot-l">Pasto 1 · il più grande</span></div>
+          <ul>
+            <li>Uova strapazzate <span class="g">5</span></li>
+            <li>Pane a lievitazione naturale <span class="g">4 fette</span></li>
+            <li>Avocado <span class="g">½</span></li>
+            <li>Pomodorini <span class="g">150 g</span></li>
+            <li>Fiocchi di latte <span class="g">100 g</span></li>
+            <li>Olio a crudo <span class="g">1 cucchiaio</span></li>
+          </ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">12:00</span><span class="slot-l">Shake</span></div>
+          <ul><li>Whey <span class="g">20 g</span> · latte <span class="g">300 ml</span> · creatina · 1 banana</li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">14:00</span><span class="slot-l">Spuntino</span></div>
+          <ul><li>Macedonia <span class="g">200 g</span> + yogurt greco <span class="g">200 g</span></li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">16:30</span><span class="slot-l">Pasto 2 · carichi per domani</span></div>
+          <ul>
+            <li>Polpette al sugo <span class="g">250 g</span></li>
+            <li>Pasta <span class="g">250 g cotta</span></li>
+            <li>Fagiolini <span class="g">200 g</span></li>
+            <li>Bietola appassita <span class="g">100 g</span></li>
+            <li>Olio a crudo <span class="g">1 cucchiaio</span> + parmigiano</li>
+          </ul>
+        </div>
+        <div class="day-foot"><span>Foglia: bietola</span><span>≈ 175 g proteine</span></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head">
+          <span class="dow">Giovedì</span>
+          <span class="dt">3 settembre</span>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">05:45</span><span class="slot-l">Pre-training</span></div>
+          <ul><li>Caffè nero · poi liberi fino alle 10:00</li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">09:30</span><span class="slot-l">Pasto 1 · il più grande</span></div>
+          <ul>
+            <li>Shakshuka: 4 uova nel sugo pronto</li>
+            <li>Feta sbriciolata <span class="g">60 g</span></li>
+            <li>Pane a lievitazione naturale <span class="g">3 fette</span></li>
+            <li>Fiocchi di latte <span class="g">100 g</span></li>
+          </ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">12:00</span><span class="slot-l">Shake</span></div>
+          <ul><li>Whey <span class="g">35 g</span> · latte <span class="g">300 ml</span> · creatina · 1 banana</li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">14:00</span><span class="slot-l">Spuntino</span></div>
+          <ul><li>Macedonia <span class="g">200 g</span> + yogurt greco <span class="g">200 g</span></li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">16:30</span><span class="slot-l">Pasto 2 · carichi per domani</span></div>
+          <ul>
+            <li>Pollo arrosto <span class="g">200 g</span></li>
+            <li>Patate al forno <span class="g">450 g</span></li>
+            <li>Zucchine <span class="g">200 g</span></li>
+            <li>Spinacino crudo <span class="g">100 g</span></li>
+            <li>Olio a crudo <span class="g">1 cucchiaio</span></li>
+          </ul>
+        </div>
+        <div class="day-foot"><span>Foglia: spinacino</span><span>≈ 183 g proteine</span></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head">
+          <span class="dow">Venerdì</span>
+          <span class="dt">4 settembre · frutto intero</span>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">05:45</span><span class="slot-l">Pre-training</span></div>
+          <ul><li>Caffè nero · poi liberi fino alle 10:00</li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">09:30</span><span class="slot-l">Pasto 1 · il più grande</span></div>
+          <ul>
+            <li>Skyr <span class="g">300 g</span></li>
+            <li>Fiocchi d'avena <span class="g">120 g</span></li>
+            <li>Noci <span class="g">30 g</span> · mandorle <span class="g">20 g</span></li>
+            <li>Mirtilli <span class="g">125 g</span></li>
+            <li>Miele <span class="g">20 g</span></li>
+          </ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">12:00</span><span class="slot-l">Shake</span></div>
+          <ul><li>Whey <span class="g">20 g</span> · latte <span class="g">300 ml</span> · creatina · 1 banana</li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">14:00</span><span class="slot-l">Spuntino</span></div>
+          <ul><li>1 mela o 1 arancia intera + yogurt greco <span class="g">200 g</span></li></ul>
+        </div>
+        <div class="slot">
+          <div class="slot-h"><span class="slot-t">16:30</span><span class="slot-l">Pasto 2 · beef bowl</span></div>
+          <ul>
+            <li>Macinato di manzo <span class="g">150 g</span></li>
+            <li>Patata dolce al forno <span class="g">400 g</span></li>
+            <li>Broccoli <span class="g">200 g</span></li>
+            <li>Cavolo nero appassito <span class="g">100 g</span></li>
+            <li>Fiocchi di latte <span class="g">100 g</span> · avocado <span class="g">½</span></li>
+          </ul>
+        </div>
+        <div class="day-foot"><span>Foglia: cavolo nero</span><span>≈ 176 g proteine</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 05 REGOLE ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="num">05 — LE REGOLE</span>
+      <h2>Quello che tiene in piedi tutto</h2>
+    </div>
+
+    <div class="rules">
+      <div class="box">
+        <h3>Ogni giorno, senza eccezioni</h3>
+        <ul>
+          <li><b>Caffè tra le 04:00 e le 10:00</b>, fino a 3–4 espressi. Il vincolo è l'ora, non il numero: quello delle 05:45 è la dose pre-allenamento, gli altri sono abitudine e vanno bene. <b>Dopo le 10:00 zero</b>, un espresso alle 14:00 è ancora attivo per metà alle 20:00.</li>
+          <li><b>Creatina 5 g tutti i giorni</b>, riposo compreso. L'orario non conta, sta nello shake solo perché è il pasto che non salti mai. Nelle prime settimane fa salire il peso di 1–2 kg d'acqua: è acqua, non grasso, e non va usata per regolare i carboidrati.</li>
+          <li><b>Acqua 3–3,5 L</b>, tutta tra le 04:00 e le <b>18:30</b>, poi stop. La creatina alza il fabbisogno; bere dopo le 18:30 significa svegliarsi all'una.</li>
+          <li><b>Olio a crudo nel piatto</b>, un cucchiaio a pasto, non in cottura. Così la dose di grassi è misurata e l'olio resta buono.</li>
+          <li><b>Foglia verde diversa ogni giorno.</b> Gli spinaci tutti i giorni sono troppi ossalati: legano calcio e magnesio nell'intestino.</li>
+          <li><b>Ti pesi ogni mattina</b> e guardi la media settimanale. Se cala più di 0,3 kg, aggiungi 100 g di patate o pasta al pasto delle 16:30. Non aggiungere un quarto pasto.</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <h3>Lo yogurt: la regola dell'etichetta</h3>
+        <ul>
+          <li>Serve tutti i giorni, un chilo a settimana. Non conta la marca, contano tre numeri sul retro della vaschetta.</li>
+          <li><b>Proteine ≥ 9 g per 100 g.</b> Sotto questa soglia stai comprando acqua e addensanti.</li>
+          <li><b>Zuccheri ≤ 5 g per 100 g.</b> Quello che c'è deve essere lattosio, non zucchero aggiunto.</li>
+          <li><b>Ingredienti: latte e fermenti lattici. Basta.</b> Se c'è panna, amido, gelatina o proteine del latte aggiunte, rimetti giù la vaschetta.</li>
+          <li>Passano la regola lo <b>skyr</b> e lo <b>yogurt greco colato 0%</b>. Non la passa quasi mai quello scritto <b>«alla greca»</b>, che è yogurt normale addensato.</li>
+          <li><b>Vaschetta grande, non i vasetti singoli</b>: costa meno e si porziona meglio. Scrivi la data di apertura sul coperchio, cinque giorni.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Prossima cottura: sabato 5 settembre</b>, da confermare con Enit. È la sessione in cui parte il sistema delle scorte: primo batch da <b>10 burrito</b> e raddoppio delle polpette. Da lì in poi ogni cottura produce più del necessario, e dopo tre settimane la seconda cottura settimanale diventa facoltativa.</p>
+    <p><b>Due cose ancora da chiudere:</b> il peso corporeo, perché tutte le porzioni qui sopra sono tarate su 80 kg. E le analisi del sangue prima di entrare in regime: profilo lipidico con <b>ApoB</b>, vitamina D, ferritina, B12. Un solo prelievo, e trasforma tre supposizioni in tre numeri.</p>
+  </footer>
+
+</div>
